@@ -1,6 +1,6 @@
 import React from 'react'
 import { schoolRules } from '../../constants'
-import classroom_rules from '../../assets/classroom_rules.jpg'
+import classroom_rules from '../../assets/classroom_rules.png'
 
 export const ClassroomRules = () => {
   return (
@@ -18,12 +18,12 @@ export const ClassroomRules = () => {
             ))}
           </ul>
         </div>
-        
+
         {/* Right side - Image */}
         <div className="flex justify-center lg:justify-end">
-          <img 
-            src={classroom_rules} 
-            alt="Classroom Rules" 
+          <img
+            src={classroom_rules}
+            alt="Classroom Rules"
             className="max-w-full h-full rounded-lg"
             style={{ maxHeight: '500px' }}
           />
@@ -32,4 +32,4 @@ export const ClassroomRules = () => {
     </div>
   )
 }
- 
+

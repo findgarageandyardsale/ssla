@@ -100,16 +100,14 @@ export const Navbar = ({ setIsOpenModal, setIsOpenCalendarModal }) => {
         }}
         className={`
          px-3 py-2 rounded-md font-semibold font-rethink transition-all duration-200
-         ${
-           isMobile
-             ? "block text-base w-full text-left"
-             : "text-base lg:text-base md:text-sm"
-         }
-         ${
-           isActive
-             ? "text-[#f48b49]  border-[#f48b49]"
-             : "text-brand-text-color hover:text-[#f48b49]"
-         }
+         ${isMobile
+            ? "block text-base w-full text-left"
+            : "text-base lg:text-base md:text-sm"
+          }
+         ${isActive
+            ? "text-[#f48b49]  border-[#f48b49]"
+            : "text-brand-text-color hover:text-[#f48b49]"
+          }
        `}
       >
         {item.label}
@@ -142,6 +140,7 @@ export const Navbar = ({ setIsOpenModal, setIsOpenCalendarModal }) => {
                 onClick={() => {
                   setIsOpenModal(true);
                 }}
+                className="text-brand-text-color hover:text-[#f48b49] transition-colors duration-200 font-semibold"
               >
                 Notice Board
               </button>
@@ -154,6 +153,7 @@ export const Navbar = ({ setIsOpenModal, setIsOpenCalendarModal }) => {
                 onClick={() => {
                   setIsOpenCalendarModal(true);
                 }}
+                className="text-brand-text-color hover:text-[#f48b49] transition-colors duration-200 font-semibold"
               >
                 Calendar
               </button>
@@ -231,7 +231,6 @@ export const Navbar = ({ setIsOpenModal, setIsOpenCalendarModal }) => {
                           { value: "tabla", label: "Tabla" },
                           { value: "dilruba", label: "Dilruba" },
                           { value: "rabab", label: "Rabab" },
-                          { value: "gatka", label: "Gatka" },
                         ]}
                         className="space-y-1"
                       />
@@ -298,7 +297,7 @@ export const Navbar = ({ setIsOpenModal, setIsOpenCalendarModal }) => {
                     setIsOpenModal(true);
                     setIsOpen(false);
                   }}
-                  className="w-full text-left px-3 py-2 text-gray-700 hover:bg-gray-100 transition-colors duration-200 font-medium"
+                  className="w-full text-left px-3 py-2 text-gray-700 hover:text-[#f48b49] hover:bg-gray-50 transition-colors duration-200 font-medium"
                 >
                   Notice Board
                 </button>
@@ -311,7 +310,7 @@ export const Navbar = ({ setIsOpenModal, setIsOpenCalendarModal }) => {
                     setIsOpenCalendarModal(true);
                     setIsOpen(false);
                   }}
-                  className="w-full text-left px-3 py-2 text-gray-700 hover:bg-gray-100 transition-colors duration-200 font-medium"
+                  className="w-full text-left px-3 py-2 text-gray-700 hover:text-[#f48b49] hover:bg-gray-50 transition-colors duration-200 font-medium"
                 >
                   Calendar
                 </button>
@@ -385,8 +384,7 @@ export const Navbar = ({ setIsOpenModal, setIsOpenCalendarModal }) => {
                           { value: "vocal", label: "Vocal" },
                           { value: "tabla", label: "Tabla" },
                           { value: "dilruba", label: "Dilruba" },
-                          { value: "rabab", label: "Rabab" },
-                          { value: "gatka", label: "Gatka" },
+                          { value: "rabab", label: "Rabab" }
                         ]}
                         className="space-y-1"
                       />
