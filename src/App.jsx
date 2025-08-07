@@ -24,7 +24,7 @@ import { UploadStatus } from "./components/UploadStatus";
 import AutoLoginStatus from "./components/AutoLoginStatus";
 import { useEffect, useState } from "react";
 import { ImageDialog } from "./components/ImageFlyer/ImageDialog";
-import ssla_flyer from "./assets/ssla_flyer.jpg";
+import ssla_flyer from "./assets/ssla_flyer.jpeg";
 import CalendarPage from "./pages/CalendarPage";
 import calendar from "./assets/calendar.jpg";
 
@@ -308,10 +308,12 @@ const App = () => {
       ),
     },
   ]);
-useEffect(() => {
-  localStorage.removeItem('cloudinary_gallery_images');
-  localStorage.removeItem('form_signatures');
-})
+
+  useEffect(() => {
+    localStorage.removeItem('cloudinary_gallery_images');
+    localStorage.removeItem('form_signatures');
+  })
+
   return (
     <>
       <RouterProvider router={router} />

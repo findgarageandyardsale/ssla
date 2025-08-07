@@ -1,5 +1,5 @@
 import { schoolRules } from '../../constants'
-import to_and_from_school from '../../assets/school.png'
+import to_and_from_school from '../../assets/to_from.png'
 
 export const ToAndFromSchool = () => {
   return (
@@ -17,12 +17,12 @@ export const ToAndFromSchool = () => {
             ))}
           </ul>
         </div>
-        
+
         {/* Right side - Image */}
         <div className="flex justify-center lg:justify-end">
-          <img 
-            src={to_and_from_school} 
-            alt="To and From School" 
+          <img
+            src={to_and_from_school}
+            alt="To and From School"
             className="max-w-full h-full rounded-lg"
             style={{ maxHeight: '500px' }}
           />
@@ -31,4 +31,4 @@ export const ToAndFromSchool = () => {
     </div>
   )
 }
- 
+

@@ -67,7 +67,6 @@ export const GSRegistrationForm = () => {
       if (data.instruments?.tabla) selectedInstruments.push("Tabla");
       if (data.instruments?.dilruba) selectedInstruments.push("Dilruba");
       if (data.instruments?.rabab) selectedInstruments.push("Rabab");
-      if (data.instruments?.gatka) selectedInstruments.push("Gatka");
 
       // Time Slots
       const selectedTimeSlots = [];
@@ -176,16 +175,14 @@ export const GSRegistrationForm = () => {
 
       // Emergency contact fields
       doc.text(
-        `Emergency Contact Name: ${
-          data.emergencyContactName || "Not provided"
+        `Emergency Contact Name: ${data.emergencyContactName || "Not provided"
         }`,
         20,
         yPosition
       );
       yPosition += 8;
       doc.text(
-        `Emergency Phone: ${
-          data.emergencyContactPhoneNumber || "Not provided"
+        `Emergency Phone: ${data.emergencyContactPhoneNumber || "Not provided"
         }`,
         20,
         yPosition
@@ -244,14 +241,14 @@ export const GSRegistrationForm = () => {
                 <h1 style="color: #ffffff; margin: 0; font-size: 24px; font-weight: bold;">Registration Confirmation</h1>
                 <p style="color: #e0e7ff; margin: 10px 0 0 0; font-size: 14px;">SSLA School - Student Registration Portal</p>
                 <p style="color: #c7d2fe; margin: 5px 0 0 0; font-size: 12px;">Generated on ${new Date().toLocaleDateString(
-                  "en-US",
-                  {
-                    weekday: "long",
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  }
-                )}</p>
+        "en-US",
+        {
+          weekday: "long",
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        }
+      )}</p>
               </td>
             </tr>
             
@@ -267,52 +264,46 @@ export const GSRegistrationForm = () => {
                     <tr>
                       <td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;">
                         <strong style="color: #374151; font-size: 12px; text-transform: uppercase;">Full Name:</strong>
-                        <span style="color: #1f2937; margin-left: 10px; font-size: 14px;">${
-                          data.firstName || "Not provided"
-                        } ${data.middleName || ""} ${
-        data.lastName || "Not provided"
-      }</span>
+                        <span style="color: #1f2937; margin-left: 10px; font-size: 14px;">${data.firstName || "Not provided"
+        } ${data.middleName || ""} ${data.lastName || "Not provided"
+        }</span>
                       </td>
                     </tr>
                     <tr>
                       <td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;">
                         <strong style="color: #374151; font-size: 12px; text-transform: uppercase;">Age & Gender:</strong>
-                        <span style="color: #1f2937; margin-left: 10px; font-size: 14px;">${
-                          data.age || "Not provided"
-                        } years old, ${data.gender || "Not provided"}</span>
+                        <span style="color: #1f2937; margin-left: 10px; font-size: 14px;">${data.age || "Not provided"
+        } years old, ${data.gender || "Not provided"}</span>
                       </td>
                     </tr>
                     <tr>
                       <td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;">
                         <strong style="color: #374151; font-size: 12px; text-transform: uppercase;">Date of Birth:</strong>
-                        <span style="color: #1f2937; margin-left: 10px; font-size: 14px;">${
-                          data.dateOfBirth
-                            ? new Date(data.dateOfBirth).toLocaleDateString(
-                                "en-US",
-                                {
-                                  year: "numeric",
-                                  month: "long",
-                                  day: "numeric",
-                                }
-                              )
-                            : "Not provided"
-                        }</span>
+                        <span style="color: #1f2937; margin-left: 10px; font-size: 14px;">${data.dateOfBirth
+          ? new Date(data.dateOfBirth).toLocaleDateString(
+            "en-US",
+            {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            }
+          )
+          : "Not provided"
+        }</span>
                       </td>
                     </tr>
                     <tr>
                       <td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;">
                         <strong style="color: #374151; font-size: 12px; text-transform: uppercase;">Father's Name:</strong>
-                        <span style="color: #1f2937; margin-left: 10px; font-size: 14px;">${
-                          data.fatherName || "Not provided"
-                        }</span>
+                        <span style="color: #1f2937; margin-left: 10px; font-size: 14px;">${data.fatherName || "Not provided"
+        }</span>
                       </td>
                     </tr>
                     <tr>
                       <td style="padding: 8px 0;">
                         <strong style="color: #374151; font-size: 12px; text-transform: uppercase;">Mother's Name:</strong>
-                        <span style="color: #1f2937; margin-left: 10px; font-size: 14px;">${
-                          data.motherName || "Not provided"
-                        }</span>
+                        <span style="color: #1f2937; margin-left: 10px; font-size: 14px;">${data.motherName || "Not provided"
+        }</span>
                       </td>
                     </tr>
                   </table>
@@ -327,65 +318,57 @@ export const GSRegistrationForm = () => {
                     <tr>
                       <td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;">
                         <strong style="color: #374151; font-size: 12px; text-transform: uppercase;">Street Address:</strong>
-                        <span style="color: #1f2937; margin-left: 10px; font-size: 14px;">${
-                          data.streetAddress || "Not provided"
-                        }</span>
+                        <span style="color: #1f2937; margin-left: 10px; font-size: 14px;">${data.streetAddress || "Not provided"
+        }</span>
                       </td>
                     </tr>
                     <tr>
                       <td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;">
                         <strong style="color: #374151; font-size: 12px; text-transform: uppercase;">Apartment No:</strong>
-                        <span style="color: #1f2937; margin-left: 10px; font-size: 14px;">${
-                          data.apartmentNo || "Not provided"
-                        }</span>
+                        <span style="color: #1f2937; margin-left: 10px; font-size: 14px;">${data.apartmentNo || "Not provided"
+        }</span>
                       </td>
                     </tr>
                     <tr>
                       <td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;">
                         <strong style="color: #374151; font-size: 12px; text-transform: uppercase;">City:</strong>
-                        <span style="color: #1f2937; margin-left: 10px; font-size: 14px;">${
-                          data.city || "Not provided"
-                        }</span>
+                        <span style="color: #1f2937; margin-left: 10px; font-size: 14px;">${data.city || "Not provided"
+        }</span>
                       </td>
                     </tr>
                     <tr>
                       <td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;">
                         <strong style="color: #374151; font-size: 12px; text-transform: uppercase;">State/Province:</strong>
-                        <span style="color: #1f2937; margin-left: 10px; font-size: 14px;">${
-                          data.state || "Not provided"
-                        }</span>
+                        <span style="color: #1f2937; margin-left: 10px; font-size: 14px;">${data.state || "Not provided"
+        }</span>
                       </td>
                     </tr>
                     <tr>
                       <td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;">
                         <strong style="color: #374151; font-size: 12px; text-transform: uppercase;">ZIP/Postal Code:</strong>
-                        <span style="color: #1f2937; margin-left: 10px; font-size: 14px;">${
-                          data.zipCode || "Not provided"
-                        }</span>
+                        <span style="color: #1f2937; margin-left: 10px; font-size: 14px;">${data.zipCode || "Not provided"
+        }</span>
                       </td>
                     </tr>
                     <tr>
                       <td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;">
                         <strong style="color: #374151; font-size: 12px; text-transform: uppercase;">Home Phone:</strong>
-                        <span style="color: #1f2937; margin-left: 10px; font-size: 14px;">${
-                          data.homePhoneNumber || "Not provided"
-                        }</span>
+                        <span style="color: #1f2937; margin-left: 10px; font-size: 14px;">${data.homePhoneNumber || "Not provided"
+        }</span>
                       </td>
                     </tr>
                     <tr>
                       <td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;">
                         <strong style="color: #374151; font-size: 12px; text-transform: uppercase;">Cell Phone:</strong>
-                        <span style="color: #1f2937; margin-left: 10px; font-size: 14px;">${
-                          data.cellPhoneNumber || "Not provided"
-                        }</span>
+                        <span style="color: #1f2937; margin-left: 10px; font-size: 14px;">${data.cellPhoneNumber || "Not provided"
+        }</span>
                       </td>
                     </tr>
                     <tr>
                       <td style="padding: 8px 0;">
                         <strong style="color: #374151; font-size: 12px; text-transform: uppercase;">Email Address:</strong>
-                        <span style="color: #1f2937; margin-left: 10px; font-size: 14px;">${
-                          data.email || "Not provided"
-                        }</span>
+                        <span style="color: #1f2937; margin-left: 10px; font-size: 14px;">${data.email || "Not provided"
+        }</span>
                       </td>
                     </tr>
                   </table>
@@ -400,49 +383,43 @@ export const GSRegistrationForm = () => {
                     <tr>
                       <td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;">
                         <strong style="color: #374151; font-size: 12px; text-transform: uppercase;">Emergency Contact Name:</strong>
-                        <span style="color: #1f2937; margin-left: 10px; font-size: 14px;">${
-                          data.emergencyContactName || "Not provided"
-                        }</span>
+                        <span style="color: #1f2937; margin-left: 10px; font-size: 14px;">${data.emergencyContactName || "Not provided"
+        }</span>
                       </td>
                     </tr>
                     <tr>
                       <td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;">
                         <strong style="color: #374151; font-size: 12px; text-transform: uppercase;">Emergency Phone:</strong>
-                        <span style="color: #1f2937; margin-left: 10px; font-size: 14px;">${
-                          data.emergencyContactPhoneNumber || "Not provided"
-                        }</span>
+                        <span style="color: #1f2937; margin-left: 10px; font-size: 14px;">${data.emergencyContactPhoneNumber || "Not provided"
+        }</span>
                       </td>
                     </tr>
                     <tr>
                       <td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;">
                         <strong style="color: #374151; font-size: 12px; text-transform: uppercase;">Emergency Address:</strong>
-                        <span style="color: #1f2937; margin-left: 10px; font-size: 14px;">${
-                          data.emergencyContactAddress || "Not provided"
-                        }</span>
+                        <span style="color: #1f2937; margin-left: 10px; font-size: 14px;">${data.emergencyContactAddress || "Not provided"
+        }</span>
                       </td>
                     </tr>
                     <tr>
                       <td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;">
                         <strong style="color: #374151; font-size: 12px; text-transform: uppercase;">Emergency Apartment No:</strong>
-                        <span style="color: #1f2937; margin-left: 10px; font-size: 14px;">${
-                          data.emergencyContactApartmentNo || "Not provided"
-                        }</span>
+                        <span style="color: #1f2937; margin-left: 10px; font-size: 14px;">${data.emergencyContactApartmentNo || "Not provided"
+        }</span>
                       </td>
                     </tr>
                     <tr>
                       <td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;">
                         <strong style="color: #374151; font-size: 12px; text-transform: uppercase;">Emergency City:</strong>
-                        <span style="color: #1f2937; margin-left: 10px; font-size: 14px;">${
-                          data.emergencyContactCity || "Not provided"
-                        }</span>
+                        <span style="color: #1f2937; margin-left: 10px; font-size: 14px;">${data.emergencyContactCity || "Not provided"
+        }</span>
                       </td>
                     </tr>
                     <tr>
                       <td style="padding: 8px 0;">
                         <strong style="color: #374151; font-size: 12px; text-transform: uppercase;">Emergency ZIP Code:</strong>
-                        <span style="color: #1f2937; margin-left: 10px; font-size: 14px;">${
-                          data.emergencyContactZipCode || "Not provided"
-                        }</span>
+                        <span style="color: #1f2937; margin-left: 10px; font-size: 14px;">${data.emergencyContactZipCode || "Not provided"
+        }</span>
                       </td>
                     </tr>
                   </table>
@@ -464,13 +441,11 @@ export const GSRegistrationForm = () => {
                   Thank you for choosing <strong style="color: #3b82f6;">SSLA School</strong>
                 </p>
                 <p style="color: #9ca3af; margin: 0 0 10px 0; font-size: 12px;">
-                  We will contact you soon at <strong style="color: #3b82f6;">${
-                    data.cellPhoneNumber ||
-                    data.homePhoneNumber ||
-                    "the provided contact information"
-                  }</strong> or <strong style="color: #3b82f6;">${
-        data.email || "the provided email address"
-      }</strong>
+                  We will contact you soon at <strong style="color: #3b82f6;">${data.cellPhoneNumber ||
+        data.homePhoneNumber ||
+        "the provided contact information"
+        }</strong> or <strong style="color: #3b82f6;">${data.email || "the provided email address"
+        }</strong>
                 </p>
                 <p style="color: #6b7280; margin: 0; font-size: 11px;">
                   This is an automated confirmation email. Please do not reply to this message.
@@ -521,7 +496,6 @@ export const GSRegistrationForm = () => {
     if (data.instruments?.tabla) selectedInstruments.push("Tabla");
     if (data.instruments?.dilruba) selectedInstruments.push("Dilruba");
     if (data.instruments?.rabab) selectedInstruments.push("Rabab");
-    if (data.instruments?.gatka) selectedInstruments.push("Gatka");
 
     // Format selected time slots
     const selectedTimeSlots = [];
@@ -536,18 +510,16 @@ Dear ${data.firstName} ${data.lastName},
 Thank you for your Gurmat Sangeet registration! Here are your complete details:
 
 === MUSICAL INSTRUMENTS ===
-Selected Instruments: ${
-      selectedInstruments.length > 0
+Selected Instruments: ${selectedInstruments.length > 0
         ? selectedInstruments.join(", ")
         : "None selected"
-    }
+      }
 
 === TIME SLOTS ===
-Preferred Time Slots: ${
-      selectedTimeSlots.length > 0
+Preferred Time Slots: ${selectedTimeSlots.length > 0
         ? selectedTimeSlots.join(", ")
         : "None selected"
-    }
+      }
 
 === PERSONAL INFORMATION ===
 First Name: ${data.firstName || "Not provided"}
@@ -575,33 +547,29 @@ Email Address: ${data.email || "Not provided"}
 Emergency Contact Name: ${data.emergencyContactName || "Not provided"}
 Emergency Contact Phone: ${data.emergencyContactPhoneNumber || "Not provided"}
 Emergency Contact Address: ${data.emergencyContactAddress || "Not provided"}
-Emergency Contact Apartment No: ${
-      data.emergencyContactApartmentNo || "Not provided"
-    }
+Emergency Contact Apartment No: ${data.emergencyContactApartmentNo || "Not provided"
+      }
 Emergency Contact City: ${data.emergencyContactCity || "Not provided"}
 Emergency Contact Zip Code: ${data.emergencyContactZipCode || "Not provided"}
 
 === SIGNATURE INFORMATION ===
 Student Signature Date: ${data.studentSignatureDate || "Not provided"}
-Student Signature Status: ${
-      studentSignature ? "✅ Uploaded" : "❌ Not uploaded"
-    }
+Student Signature Status: ${studentSignature ? "✅ Uploaded" : "❌ Not uploaded"
+      }
 Student Signature URL: ${studentSignatureUrl}
 Parent/Guardian Signature Date: ${data.parentSignatureDate || "Not provided"}
-Parent/Guardian Signature Status: ${
-      parentSignature ? "✅ Uploaded" : "❌ Not uploaded"
-    }
+Parent/Guardian Signature Status: ${parentSignature ? "✅ Uploaded" : "❌ Not uploaded"
+      }
 Parent/Guardian Signature URL: ${parentSignatureUrl}
 
 === SUBMISSION DETAILS ===
 Submitted on: ${new Date().toLocaleString()}
 Form Type: Gurmat Sangeet Registration
 
-We will contact you soon at ${
-      data.cellPhoneNumber ||
+We will contact you soon at ${data.cellPhoneNumber ||
       data.homePhoneNumber ||
       "the provided contact information"
-    } or ${data.email || "the provided email address"}.
+      } or ${data.email || "the provided email address"}.
 
 Best regards,
 Gurmat Sangeet Registration Team
@@ -666,7 +634,6 @@ This is an automated confirmation email.
         instruments_tabla: formData.instruments?.tabla ? "Yes" : "No",
         instruments_dilruba: formData.instruments?.dilruba ? "Yes" : "No",
         instruments_rabab: formData.instruments?.rabab ? "Yes" : "No",
-        instruments_gatka: formData.instruments?.gatka ? "Yes" : "No",
 
         // Time Slots
         time_slots_saturday_morning: formData.timeSlots?.saturdayMorning

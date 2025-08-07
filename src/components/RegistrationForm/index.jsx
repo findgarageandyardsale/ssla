@@ -19,9 +19,9 @@ const MusicRegistrationForm = () => {
   return (
     <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-lg">
       <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center text-uppercase">
-       Gurmat Sangeet Registration Form
+        Gurmat Sangeet Registration Form
       </h2>
-      
+
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         {/* Musical Instruments Section */}
         <div className="bg-gray-50 p-4 rounded-lg">
@@ -37,7 +37,7 @@ const MusicRegistrationForm = () => {
               />
               <span className="text-gray-700 font-medium">Vocal</span>
             </label>
-            
+
             <label className="flex items-center space-x-3 cursor-pointer">
               <input
                 type="checkbox"
@@ -46,7 +46,7 @@ const MusicRegistrationForm = () => {
               />
               <span className="text-gray-700 font-medium">Tabla</span>
             </label>
-            
+
             <label className="flex items-center space-x-3 cursor-pointer">
               <input
                 type="checkbox"
@@ -55,7 +55,7 @@ const MusicRegistrationForm = () => {
               />
               <span className="text-gray-700 font-medium">Dilruba</span>
             </label>
-            
+
             <label className="flex items-center space-x-3 cursor-pointer">
               <input
                 type="checkbox"
@@ -64,15 +64,7 @@ const MusicRegistrationForm = () => {
               />
               <span className="text-gray-700 font-medium">Rabab</span>
             </label>
-            
-            <label className="flex items-center space-x-3 cursor-pointer">
-              <input
-                type="checkbox"
-                {...register('instruments.gatka')}
-                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
-              />
-              <span className="text-gray-700 font-medium">Gatka</span>
-            </label>
+
           </div>
         </div>
 
@@ -92,7 +84,7 @@ const MusicRegistrationForm = () => {
                 Saturday 12:00 PM to 2:00 PM
               </span>
             </label>
-            
+
             <label className="flex items-center space-x-3 cursor-pointer">
               <input
                 type="checkbox"
@@ -126,14 +118,14 @@ const MusicRegistrationForm = () => {
                 <p className="text-red-500 text-sm mt-1">{errors.studentName.message}</p>
               )}
             </div>
-            
+
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Age *
               </label>
               <input
                 type="number"
-                {...register('age', { 
+                {...register('age', {
                   required: 'Age is required',
                   min: { value: 3, message: 'Age must be at least 3' },
                   max: { value: 18, message: 'Age must be 18 or less' }
@@ -145,7 +137,7 @@ const MusicRegistrationForm = () => {
                 <p className="text-red-500 text-sm mt-1">{errors.age.message}</p>
               )}
             </div>
-            
+
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Parent/Guardian Name *
@@ -160,14 +152,14 @@ const MusicRegistrationForm = () => {
                 <p className="text-red-500 text-sm mt-1">{errors.parentName.message}</p>
               )}
             </div>
-            
+
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Phone Number *
               </label>
               <input
                 type="tel"
-                {...register('phoneNumber', { 
+                {...register('phoneNumber', {
                   required: 'Phone number is required',
                   pattern: {
                     value: /^[0-9-+\s()]*$/,
@@ -189,7 +181,7 @@ const MusicRegistrationForm = () => {
           <h3 className="text-lg font-semibold text-gray-700 mb-4">
             Motivation and Practice Commitment
           </h3>
-          
+
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-700 mb-2">
               What inspires you to learn Gurmat Sangeet? *
@@ -218,7 +210,7 @@ const MusicRegistrationForm = () => {
                 />
                 <span className="text-gray-700 font-medium">20 minutes</span>
               </label>
-              
+
               <label className="flex items-center space-x-3 cursor-pointer">
                 <input
                   type="checkbox"
@@ -236,7 +228,7 @@ const MusicRegistrationForm = () => {
           <h3 className="text-lg font-semibold text-gray-700 mb-4">
             Signatures and Agreement
           </h3>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Student Signature */}
             <div>
@@ -254,7 +246,7 @@ const MusicRegistrationForm = () => {
               {errors.studentSignature && (
                 <p className="text-red-500 text-sm mt-1">{errors.studentSignature.message}</p>
               )}
-              
+
               <div className="mt-3">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Date *
@@ -286,7 +278,7 @@ const MusicRegistrationForm = () => {
               {errors.parentSignature && (
                 <p className="text-red-500 text-sm mt-1">{errors.parentSignature.message}</p>
               )}
-              
+
               <div className="mt-3">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Date *

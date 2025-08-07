@@ -80,7 +80,6 @@ export const GSForm = ({ onSubmit, isSubmitting }) => {
                       { value: "tabla", label: "Tabla" },
                       { value: "dilruba", label: "Dilruba" },
                       { value: "rabab", label: "Rabab" },
-                      { value: "gatka", label: "Gatka" },
                     ]}
                     className="grid grid-cols-1 md:grid-cols-2 gap-3"
                   />

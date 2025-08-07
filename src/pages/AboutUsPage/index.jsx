@@ -138,12 +138,20 @@ export const AboutUsPage = () => {
   ];
 
   const textParagraphs = [
-    "The School started in on August 9, 1997. We have nine class-rooms and two state of the art computer labs. Student ages range from 5 years t o 16 years. For students over age 16, the are beginning, intermediate, and advanced level of Sikh theol-ogyandhistory classes. Keeping in mind the learning style of students in the west, we have designed our own instructional materials. Never satis- fied with our status quo, we are continually improving our in- structional programs.",
-    "We have twelve class rooms. The students are categorized according to their age and knowledge of Gurmukhi. Student ages range from four (4) years to eighteen (18). There are also classes for adults over age 18. Each student is given opportunity to participate in a variety of activities for personal growth and development.",
-    "Classes are held every Sunday from 9:30 a.m. to 12:30 p.m. Gurmat Sangeet and tabla classes are from 11:30 a.m. to 2:30 p.m. ",
-    "For more information please contact.",
+    "Established on August 9, 1997, our school has been a vibrant center of Sikh learning and community engagement for over two decades. With ten well-equipped classrooms, we serve students ranging in age from 4 to 18, and also offer dedicated classes for adults over 18.",
+    "Students are thoughtfully grouped based on both their age and their proficiency in Gurmukhi, ensuring a supportive and personalized learning experience. For those over the age of 18, we offer structured courses in Sikh theology and history.",
+    "Our curriculum goes beyond academics. We offer a wide range of activities that foster personal and spiritual development, allowing each student to grow in confidence, character, and community values. All instructional materials are thoughtfully designed to align with the learning styles of students raised in Western educational environments.",
+  ];
+
+  const weeklySchedule = [
+    "Academic and Gurmat Classes: 9:30 a.m. – 12:50 p.m.",
+    "Gurmat Sangeet & Tabla Classes: 2:00 p.m. – 4:00 p.m.",
+  ];
+
+  const contactInfo = [
+    "For more information please contact:",
     "Joginder Singh Sidhu - 818.266.4757",
-    "Natasha Kaur - 630.2673480",
+    "Natasha Kaur - 630.267.3480",
   ];
 
   return (
@@ -200,7 +208,46 @@ export const AboutUsPage = () => {
             style={{ animationDelay: "600ms" }}
           >
             <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-12 shadow-xl border border-white/20">
+              {/* Main Title */}
+              <div className="text-center mb-8">
+                <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
+                  A Nurturing Environment for Lifelong Learning Since 1997
+                </h1>
+                <div className="w-24 h-1 bg-gradient-to-r from-orange-400 to-orange-600 mx-auto rounded-full"></div>
+              </div>
+
               <TextContent paragraphs={textParagraphs} />
+
+              {/* Weekly Schedule Section */}
+              <div className="mt-8 mb-6">
+                <h2 className="text-2xl font-bold text-gray-800 mb-4">Weekly Schedule</h2>
+                <p className="text-gray-700 mb-4 text-lg">Our classes are held every Sunday and are designed to enrich both the mind and spirit:</p>
+                <ul className="space-y-2">
+                  {weeklySchedule.map((item, index) => (
+                    <li key={index} className="flex items-start">
+                      <span className="text-orange-500 mr-3 mt-1">•</span>
+                      <span className="text-gray-700 text-lg">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Mission Statement */}
+              <div className="mt-8 mb-6">
+                <p className="text-gray-700 leading-relaxed text-xl">
+                  At the heart of our mission is a commitment to continuous improvement. We are always evolving—refining our programs and teaching approaches to provide the best possible learning experience for every student.
+                </p>
+              </div>
+
+              {/* Contact Information */}
+              <div className="mt-8">
+                <p className="text-gray-700 text-lg font-semibold mb-2">{contactInfo[0]}</p>
+                <div className="space-y-1">
+                  {contactInfo.slice(1).map((contact, index) => (
+                    <p key={index} className="text-gray-700 text-lg">{contact}</p>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </div>

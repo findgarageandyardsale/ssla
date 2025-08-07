@@ -10,7 +10,7 @@ const MusicRegistrationPage = () => {
             Music Class Registration
           </h1>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Register for our traditional music classes including Vocal, Tabla, Dilruba, Rabab, and Gatka. 
+            Register for our traditional music classes including Vocal, Tabla, Dilruba and Rabab. 
             Choose your preferred time slots and instruments.
           </p>
         </div>
