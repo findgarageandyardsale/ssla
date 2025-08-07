@@ -88,7 +88,7 @@ export const GSForm = ({ onSubmit, isSubmitting }) => {
                 {/* Time Slots Section */}
                 <div className="bg-gray-50 p-4 rounded-lg">
                   <h3 className="text-lg font-semibold text-gray-700 mb-4">
-                    Select Time Slots
+                    Timing Slots
                   </h3>
                   <div className="space-y-3">
                     <label className="flex items-center space-x-3 cursor-pointer">
@@ -98,20 +98,10 @@ export const GSForm = ({ onSubmit, isSubmitting }) => {
                         className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
                       />
                       <span className="text-gray-700 font-medium">
-                        Saturday 12:00 PM to 2:00 PM
+                        Sunday 2:00 PM to 4:00 PM
                       </span>
                     </label>
 
-                    <label className="flex items-center space-x-3 cursor-pointer">
-                      <input
-                        type="checkbox"
-                        {...register("timeSlots.saturdayAfternoon")}
-                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
-                      />
-                      <span className="text-gray-700 font-medium">
-                        Saturday 3:00 PM to 5:00 PM
-                      </span>
-                    </label>
                   </div>
                 </div>
 
@@ -367,8 +357,8 @@ export const GSForm = ({ onSubmit, isSubmitting }) => {
                       type="text"
                       // required
                       placeholder="Enter your apartment no"
-                      // {...register("apartmentNo", { required: "Apartment no is required" })}
-                      // error={errors.apartmentNo}
+                    // {...register("apartmentNo", { required: "Apartment no is required" })}
+                    // error={errors.apartmentNo}
                     />
 
                     <InputField

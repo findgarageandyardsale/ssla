@@ -150,8 +150,8 @@ export const AboutUsPage = () => {
 
   const contactInfo = [
     "For more information please contact:",
-    "Joginder Singh Sidhu - 818.266.4757",
-    "Natasha Kaur - 630.267.3480",
+    "Joginder Singh Sidhu : (818) 266-4757",
+    "Natasha Kaur : (630) 267-3480",
   ];
 
   return (
