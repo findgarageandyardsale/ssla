@@ -144,15 +144,10 @@ export const AboutUsPage = () => {
   ];
 
   const weeklySchedule = [
-    "Academic and Gurmat Classes: 9:30 a.m. – 12:50 p.m.",
-    "Gurmat Sangeet & Tabla Classes: 2:00 p.m. – 4:00 p.m.",
+    "Academic and Gurmat Classes: Sunday 9:30 a.m. – 12:50 p.m.",
+    "Gurmat Sangeet & Tabla Classes: Sunday 2:00 p.m. – 4:00 p.m.",
   ];
 
-  const contactInfo = [
-    "For more information please contact:",
-    "Joginder Singh Sidhu : (818) 266-4757",
-    "Natasha Kaur : (630) 267-3480",
-  ];
 
   return (
     <>
@@ -210,7 +205,7 @@ export const AboutUsPage = () => {
             <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-12 shadow-xl border border-white/20">
               {/* Main Title */}
               <div className="text-center mb-8">
-                <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
+                <h1 className="text-2xl md:text-3xl font-bold text-gray-800 mb-4">
                   A Nurturing Environment for Lifelong Learning Since 1997
                 </h1>
                 <div className="w-24 h-1 bg-gradient-to-r from-orange-400 to-orange-600 mx-auto rounded-full"></div>
@@ -237,16 +232,6 @@ export const AboutUsPage = () => {
                 <p className="text-gray-700 leading-relaxed text-xl">
                   At the heart of our mission is a commitment to continuous improvement. We are always evolving—refining our programs and teaching approaches to provide the best possible learning experience for every student.
                 </p>
-              </div>
-
-              {/* Contact Information */}
-              <div className="mt-8">
-                <p className="text-gray-700 text-lg font-semibold mb-2">{contactInfo[0]}</p>
-                <div className="space-y-1">
-                  {contactInfo.slice(1).map((contact, index) => (
-                    <p key={index} className="text-gray-700 text-lg">{contact}</p>
-                  ))}
-                </div>
               </div>
             </div>
           </div>

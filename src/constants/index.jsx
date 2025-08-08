@@ -81,7 +81,7 @@ export const schoolRules = {
       id: 3,
       icon: "📤",
       title:
-        "Students are dismissed at 12:30 p.m. Parents of students under age 6 must check with the teacher place of student dismissal.",
+        "Students are dismissed at 12:50 p.m. Parents of students under age 6 must check with the teacher place of student dismissal.",
     },
     {
       id: 4,

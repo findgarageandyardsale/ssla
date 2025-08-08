@@ -98,7 +98,7 @@ export function Contact() {
             {/* Left Side - Contact Form */}
             <div className="w-full lg:w-1/2 p-6 sm:p-8 md:p-10 lg:p-12 xl:p-16">
               <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 mb-6 sm:mb-8">
-                Leave Us A Message
+                Leave us a message
               </h3>
 
               <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
