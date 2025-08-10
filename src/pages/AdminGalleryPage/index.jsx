@@ -16,7 +16,7 @@ export const AdminGalleryPage = () => {
   const fetchImages = async () => {
     setLoading(true);
     setError(null);
-    
+
     try {
       const result = await getGalleryImages();
       if (result.success) {
@@ -37,12 +37,12 @@ export const AdminGalleryPage = () => {
 
   const handleUploadSuccess = () => {
     setSuccessMessage('Image uploaded successfully to local storage!');
-    
+
     // Refresh the images list to get the updated data
     fetchImages();
-    
+
     setShowUpload(false);
-    
+
     // Clear success message after 3 seconds
     setTimeout(() => {
       setSuccessMessage('');
@@ -51,7 +51,7 @@ export const AdminGalleryPage = () => {
 
   const handleUploadError = (error) => {
     setError(error);
-    
+
     // Clear error after 5 seconds
     setTimeout(() => {
       setError(null);
@@ -72,7 +72,7 @@ export const AdminGalleryPage = () => {
       } else {
         setError(result.error || 'Failed to delete image');
       }
-      
+
       // Clear success message after 3 seconds
       setTimeout(() => {
         setSuccessMessage('');
@@ -89,7 +89,7 @@ export const AdminGalleryPage = () => {
 
   return (
     // <ProtectedRoute requireAdmin={true}>
-      <div className="bg-[#FF976317] py-12 md:px-16 mt-10 min-h-screen">
+    <div className="bg-[#FF976317] py-12 md:px-16 mt-10 min-h-screen">
       {/* Header */}
       <div className="mb-8 mx-auto pl-[6rem]">
         <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-4xl font-semibold text-orange-600 inline-block relative leading-tight">
@@ -146,10 +146,10 @@ export const AdminGalleryPage = () => {
             <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
             Refresh
           </button>
-         
-          
+
+
         </div>
-        
+
         <div className="text-sm text-gray-600">
           {images.length} image{images.length !== 1 ? 's' : ''} in local storage
           {images.length > 0 && (

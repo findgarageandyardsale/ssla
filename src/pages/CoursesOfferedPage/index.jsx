@@ -35,8 +35,8 @@ const cardData = [
     title: "Gurmat Sangeet",
     bgColor: "bg-pink-50",
   },
-  { 
-    icon: <img src={sewa_project} alt="Sewa Project" className="w-48 h-40"/>,
+  {
+    icon: <img src={sewa_project} alt="Sewa Project" className="w-48 h-40" />,
     title: "Sewa Project ",
     bgColor: "bg-teal-50",
   },
@@ -85,10 +85,8 @@ export const CoursesOfferedPage = () => {
               {/* Header */}
               <div className="text-center mb-12">
                 <div className="text-center mb-8 sm:mb-12 md:mb-16">
-                  <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-orange-500 inline-block relative">
+                  <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-orange-500">
                     COURSES OFFERED
-                    <span className="absolute -bottom-1 sm:-bottom-2 left-0 w-16 sm:w-20 md:w-24 h-[3px] sm:h-[4px] bg-orange-500"></span>
-                    <span className="absolute -bottom-1 sm:-bottom-2 left-20 sm:left-24 md:left-28 w-4 sm:w-6 md:w-8 h-[3px] sm:h-[4px] bg-orange-500"></span>
                   </h2>
                 </div>
                 <p className="text-lg text-gray-600 max-w-3xl mx-auto">
@@ -101,8 +99,8 @@ export const CoursesOfferedPage = () => {
                 {cardData?.map((card, index) => (
                   <div
                     key={index}
-                    // className="transform transition-all duration-500 hover:scale-105"
-                    // style={{ animationDelay: `${index * 150}ms` }}
+                  // className="transform transition-all duration-500 hover:scale-105"
+                  // style={{ animationDelay: `${index * 150}ms` }}
                   >
                     <RuleCard
                       icon={card.icon}

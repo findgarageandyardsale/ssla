@@ -48,8 +48,6 @@ export const Gallery = () => {
       <div className="mb-3 sm:mb-4 md:mb-6 mx-auto pl-[6rem]">
         <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-4xl font-semibold text-orange-600 inline-block relative leading-tight">
           Gallery
-          <span className="absolute -bottom-1 sm:-bottom-2 left-0 w-10 sm:w-12 md:w-16 lg:w-20 h-[2px] sm:h-[3px] bg-orange-500"></span>
-          <span className="absolute -bottom-1 sm:-bottom-2 left-12 sm:left-16 md:left-20 lg:left-24 w-2 sm:w-3 md:w-4 lg:w-6 h-[2px] sm:h-[3px] bg-orange-500"></span>
         </h2>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 max-w-6xl mx-auto">

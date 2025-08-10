@@ -38,12 +38,12 @@ const fallback_images = [
   { id: 10, image: image_10 },
   { id: 11, image: image_11 },
   { id: 12, image: image_12 },
-  { id: 13, image: image_13 },  
+  { id: 13, image: image_13 },
   { id: 14, image: image_14 },
   { id: 15, image: image_15 },
   { id: 16, image: image_16 },
   { id: 17, image: image_17 },
-  { id: 18, image: image_18 },  
+  { id: 18, image: image_18 },
 ];
 
 const ITEMS_PER_PAGE = 9;
@@ -77,20 +77,18 @@ export const GalleryPage = () => {
     (currentPage - 1) * ITEMS_PER_PAGE,
     currentPage * ITEMS_PER_PAGE
   );
-const goToPage = (page) => {
-  if (page >= 1 && page <= totalPages) {
-    setCurrentPage(page);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }
-};
+  const goToPage = (page) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
   return (
     <div className="bg-[#FF976317] py-12 md:px-16 mt-10">
       {/* Heading */}
       <div className="mb-3 sm:mb-4 md:mb-6 mx-auto pl-[6rem]">
-        <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-4xl font-semibold text-orange-600 inline-block relative leading-tight">
+        <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-4xl font-semibold text-orange-600 leading-tight">
           Gallery
-          <span className="absolute -bottom-1 sm:-bottom-2 left-0 w-10 sm:w-12 md:w-16 lg:w-20 h-[2px] sm:h-[3px] bg-orange-500"></span>
-          <span className="absolute -bottom-1 sm:-bottom-2 left-12 sm:left-16 md:left-20 lg:left-24 w-2 sm:w-3 md:w-4 lg:w-6 h-[2px] sm:h-[3px] bg-orange-500"></span>
         </h2>
       </div>
 
@@ -131,11 +129,10 @@ const goToPage = (page) => {
           <button
             key={index + 1}
             onClick={() => goToPage(index + 1)}
-            className={`py-2 px-4 rounded-md ${
-              currentPage === index + 1
+            className={`py-2 px-4 rounded-md ${currentPage === index + 1
                 ? "bg-orange-700 text-white"
                 : "bg-white text-orange-600 border border-orange-600 hover:bg-orange-50"
-            }`}
+              }`}
           >
             {index + 1}
           </button>

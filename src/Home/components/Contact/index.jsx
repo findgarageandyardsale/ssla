@@ -85,10 +85,8 @@ export function Contact() {
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8 sm:mb-12 md:mb-16">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-orange-500 inline-block relative">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-orange-500">
             CONTACT
-            <span className="absolute -bottom-1 sm:-bottom-2 left-0 w-16 sm:w-20 md:w-24 h-[3px] sm:h-[4px] bg-orange-500"></span>
-            <span className="absolute -bottom-1 sm:-bottom-2 left-20 sm:left-24 md:left-28 w-4 sm:w-6 md:w-8 h-[3px] sm:h-[4px] bg-orange-500"></span>
           </h2>
         </div>
 
