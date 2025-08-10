@@ -185,7 +185,7 @@ export function Contact() {
                     <Mail className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
                   </div>
                   <p className="text-sm sm:text-base md:text-lg text-gray-700">
-                    hp@info.com
+                    cksssla1997@gmail.com
                   </p>
                 </div>
 

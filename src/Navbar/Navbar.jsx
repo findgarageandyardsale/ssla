@@ -12,7 +12,11 @@ export const Navbar = ({ setIsOpenModal, setIsOpenCalendarModal }) => {
   const [isOpenForm, setIsOpenForm] = useState(false);
   const [showRegisterPopover, setShowRegisterPopover] = useState(false);
   const [selectedGurmatSangeetCategory, setSelectedGurmatSangeetCategory] =
-    useState("");
+    useState(() => {
+      // Initialize from localStorage if available
+      const stored = localStorage.getItem("selectedLanguageCategories");
+      return stored ? JSON.parse(stored) : [];
+    });
   const [selectedGurmatSangeetInstrument, setSelectedGurmatSangeetInstrument] =
     useState("");
   const navigate = useNavigate();
@@ -87,6 +91,48 @@ export const Navbar = ({ setIsOpenModal, setIsOpenCalendarModal }) => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [showRegisterPopover]);
+
+  // Listen for form changes and update popup state
+  useEffect(() => {
+    const handleStorageChange = () => {
+      const stored = localStorage.getItem("selectedLanguageCategories");
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        // Filter out any invalid/old values that don't match current options
+        const validOptions = [
+          "Punjabi Language",
+          "Gurmat",
+          "Gurbani Santhya",
+          "Keertan",
+          "Gurmat (age 18+)"
+        ];
+        const filteredSelection = parsed.filter(item => validOptions.includes(item));
+
+        // If there are invalid items, clean up localStorage
+        if (filteredSelection.length !== parsed.length) {
+          console.log('🧹 Cleaning up invalid selections:', {
+            original: parsed,
+            filtered: filteredSelection,
+            removed: parsed.filter(item => !validOptions.includes(item))
+          });
+          localStorage.setItem("selectedLanguageCategories", JSON.stringify(filteredSelection));
+        }
+
+        setSelectedGurmatSangeetCategory(filteredSelection);
+      }
+    };
+
+    // Listen for storage events (when localStorage changes in other tabs/windows)
+    window.addEventListener("storage", handleStorageChange);
+
+    // Also check periodically for changes (for same-tab updates)
+    const interval = setInterval(handleStorageChange, 1000);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+      clearInterval(interval);
+    };
+  }, []);
 
   // Reusable button component
 
@@ -175,40 +221,84 @@ export const Navbar = ({ setIsOpenModal, setIsOpenCalendarModal }) => {
                     {/* Language Registration */}
                     <div className="px-4 mt-4">
                       <h3 className="text-sm font-semibold text-green-600 mb-2 bg-green-100 p-2 rounded-lg">
-                        Language Registration
+                        Courses
                       </h3>
 
-                      <RadioField
-                        label=""
-                        name="gurmatCategory"
-                        value={selectedGurmatSangeetCategory}
-                        onChange={(e) => {
-                          setSelectedGurmatSangeetCategory(e.target.value);
-                          setSelectedGurmatSangeetInstrument(null);
-                          // Redirect immediately when category is selected
-                          const params = new URLSearchParams();
-                          params.append("category", e.target.value);
-                          navigate(`/register-form?${params.toString()}`);
-                          setShowRegisterPopover(false);
-                        }}
-                        options={[
-                          { value: "punjabi", label: "Punjabi Language" },
+                      <div className="space-y-2">
+                        {[
+                          { value: "Punjabi Language", label: "Punjabi Language" },
+                          { value: "Gurmat", label: "Gurmat" },
                           {
-                            value: "gurbani santhya",
+                            value: "Gurbani Santhya",
                             label: "Gurbani Santhya",
                           },
+                          { value: "Keertan", label: "Keertan" },
+
                           {
-                            value: "gurmat(age 18+)",
-                            label: "Gurmat (Age 18+)",
+                            value: "Gurmat (age 18+)",
+                            label: "Gurmat (age 18+)",
                           },
-                        ]}
-                        className="space-y-1"
-                      />
+                        ].map((option) => (
+                          <label key={option.value} className="flex items-center gap-2 cursor-pointer">
+                            <input
+                              type="checkbox"
+                              name="gurmatCategory"
+                              value={option.value}
+                              checked={selectedGurmatSangeetCategory.includes(option.value)}
+                              onChange={(e) => {
+                                let newSelection;
+                                if (e.target.checked) {
+                                  newSelection = [...selectedGurmatSangeetCategory, option.value];
+                                } else {
+                                  newSelection = selectedGurmatSangeetCategory.filter(val => val !== option.value);
+                                }
+                                setSelectedGurmatSangeetCategory(newSelection);
+                                // Save to localStorage for form synchronization
+                                localStorage.setItem("selectedLanguageCategories", JSON.stringify(newSelection));
+                              }}
+                              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                            />
+                            <span className="text-sm text-gray-700">{option.label}</span>
+                          </label>
+                        ))}
+                      </div>
+                      {selectedGurmatSangeetCategory.length > 0 && (
+                        <button
+                          onClick={() => {
+                            const params = new URLSearchParams();
+                            // Pass all selected categories as comma-separated string
+                            params.append("category", selectedGurmatSangeetCategory.join(","));
+                            navigate(`/register-form?${params.toString()}`);
+                            setShowRegisterPopover(false);
+                          }}
+                          className="mt-3 w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors text-sm"
+                        >
+                          Continue with Selection ({selectedGurmatSangeetCategory.length} selected)
+                          {/* Debug info */}
+                          {process.env.NODE_ENV === 'development' && (
+                            <div className="text-xs text-gray-500 mt-1">
+                              Debug: {JSON.stringify(selectedGurmatSangeetCategory)}
+                            </div>
+                          )}
+                        </button>
+                      )}
+
+                      {/* Clear All Button */}
+                      <button
+                        onClick={() => {
+                          setSelectedGurmatSangeetCategory([]);
+                          localStorage.removeItem("selectedLanguageCategories");
+                        }}
+                        className="mt-2 w-full bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600 transition-colors text-sm"
+                      >
+                        Clear All Selections
+                      </button>
+
                       <div className="w-full h-px bg-gradient-to-r from-gray-200 to-gray-300 mt-3"></div>
                     </div>
 
                     {/* Gurmat Sangeet Section */}
-                    <div className="px-4 mb-4">
+                    {/* <div className="px-4 mb-4">
                       <h3 className="text-sm font-semibold text-blue-600 mb-2 bg-blue-100 p-2 rounded-lg">
                         Gurmat Sangeet Registration
                       </h3>
@@ -235,7 +325,7 @@ export const Navbar = ({ setIsOpenModal, setIsOpenCalendarModal }) => {
                         className="space-y-1"
                       />
                       <div className="w-full h-px bg-gradient-to-r from-gray-200 to-gray-300 mt-3"></div>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               )}
@@ -348,14 +438,17 @@ export const Navbar = ({ setIsOpenModal, setIsOpenCalendarModal }) => {
                           setShowRegisterPopover(false);
                         }}
                         options={[
-                          { value: "punjabi", label: "Punjabi Language" },
+                          { value: "Punjabi Language", label: "Punjabi Language" },
+                          { value: "Gurmat", label: "Gurmat" },
                           {
-                            value: "gurbani santhya",
+                            value: "Gurbani Santhya",
                             label: "Gurbani Santhya",
                           },
+                          { value: "Keertan", label: "Keertan" },
+
                           {
-                            value: "gurmat(age 18+)",
-                            label: "Gurmat (Age 18+)",
+                            value: "Gurmat (age 18+)",
+                            label: "Gurmat (age 18+)",
                           },
                         ]}
                         className="space-y-1"

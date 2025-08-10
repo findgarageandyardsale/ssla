@@ -369,8 +369,8 @@ Emergency City: ${data.emergencyContactCity || "-"}, ${
     data.emergencyContactZipCode || "-"
   }
 
-=== LANGUAGE PREFERENCES ===
-Language Selection: ${
+=== COURSES ===
+Courses Selection: ${
     Array.isArray(data.language)
       ? data.language.join(", ")
       : data.language || "-"

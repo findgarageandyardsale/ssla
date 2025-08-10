@@ -28,18 +28,57 @@ export const RegistrationForm = ({ onSubmit, isSubmitting }) => {
     formState: { errors },
     watch,
     setValue,
+    reset,
   } = useForm();
 
   // Set default values from URL parameters
   useEffect(() => {
     if (categoryFromUrl) {
-      setValue("language", categoryFromUrl);
+      // Split comma-separated values and set them as an array
+      const selectedCategories = categoryFromUrl.split(",").map(cat => cat.trim());
+      setValue("language", selectedCategories);
+      // Also save to localStorage for popup synchronization
+      localStorage.setItem("selectedLanguageCategories", JSON.stringify(selectedCategories));
     }
   }, [categoryFromUrl, setValue]);
+
+  // Watch for form changes and sync with localStorage
+  useEffect(() => {
+    const subscription = watch((value, { name }) => {
+      if (name === "language" && value.language) {
+        // Save language selections to localStorage for popup synchronization
+        localStorage.setItem("selectedLanguageCategories", JSON.stringify(value.language));
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [watch]);
+
+
+
+  // Function to reset form and clear localStorage
+  const resetFormAndStorage = () => {
+    reset();
+    localStorage.removeItem("selectedLanguageCategories");
+
+    // Clear signature fields by clearing the canvas
+    const canvasElements = document.querySelectorAll('canvas');
+    canvasElements.forEach(canvas => {
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+    });
+
+    // Clear signature data from localStorage
+    localStorage.removeItem('form_signatures');
+  };
 
   const onFormSubmit = async (data) => {
     if (onSubmit) {
       await onSubmit(data);
+      // Reset form and clear localStorage after successful submission
+      resetFormAndStorage();
     }
   };
 
@@ -54,7 +93,7 @@ export const RegistrationForm = ({ onSubmit, isSubmitting }) => {
             <GraduationCap className="h-8 w-8 text-white" />
           </div>
           <h1 className="text-3xl font-bold text-gray-800 mb-2">
-            Punjabi Language Registration Form
+            Language Registration Form
           </h1>
           <p className="text-gray-600 max-w-2xl mx-auto">
             Welcome to our school! Please fill out the form below to complete
@@ -73,24 +112,31 @@ export const RegistrationForm = ({ onSubmit, isSubmitting }) => {
                   <BookOpen className="h-5 w-5 text-white" />
                 </div>
                 <h2 className="text-xl font-semibold text-gray-800">
-                  Language Preference
+                  Courses
                 </h2>
               </div>
-              <RadioField
-                label="Language Preference"
+              <CheckboxField
+                label="Courses"
                 name="language"
-                value={watch("language")} // or use a state variable to store the selected value
-                onChange={(e) => {
-                  setValue("language", e.target.value);
-                }}
+                value={watch("language") || []}
+                required
                 options={[
-                  { value: "punjabi", label: "Punjabi Language" },
-                  { value: "gurbani santhya", label: "Gurbani Santhya" },
+                  { value: "Punjabi Language", label: "Punjabi Language" },
+                  { value: "Gurmat", label: "Gurmat" },
                   {
-                    value: "gurmat(age 18+)",
+                    value: "Gurbani Santhya",
+                    label: "Gurbani Santhya",
+                  },
+                  { value: "Keertan", label: "Keertan" },
+
+                  {
+                    value: "Gurmat (age 18+)",
                     label: "Gurmat (age 18+)",
                   },
                 ]}
+                {...register("language", {
+                  required: "Language preference is required",
+                })}
                 error={errors.language}
               />
             </div>
@@ -420,7 +466,7 @@ export const RegistrationForm = ({ onSubmit, isSubmitting }) => {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <CheckboxField
+                <RadioField
                   label="Do you speak Punjabi?"
                   name="doYouSpeakPunjabi"
                   required
@@ -435,7 +481,7 @@ export const RegistrationForm = ({ onSubmit, isSubmitting }) => {
                   error={errors.doYouSpeakPunjabi}
                 />
 
-                <CheckboxField
+                <RadioField
                   label="Can you read and write Punjabi?"
                   name="canYouReadAndWritePunjabi"
                   required
@@ -474,7 +520,7 @@ export const RegistrationForm = ({ onSubmit, isSubmitting }) => {
                   error={errors.favoriteSikhBook}
                 />
 
-                <CheckboxField
+                <RadioField
                   label="How much time you will have everyday to do your homework?"
                   name="howMuchTimeYouWillHaveEverydayToDoYourHomework"
                   required
