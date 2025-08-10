@@ -66,11 +66,10 @@ export const RegistrationFormHandler = () => {
       {submitStatus && (
         <div className="fixed bottom-4 right-4 max-w-md z-50">
           <div
-            className={`p-4 rounded-lg shadow-lg border ${
-              submitStatus.type === "success"
-                ? "bg-green-50 text-green-800 border-green-200"
-                : "bg-red-50 text-red-800 border-red-200"
-            }`}
+            className={`p-4 rounded-lg shadow-lg border ${submitStatus.type === "success"
+              ? "bg-green-50 text-green-800 border-green-200"
+              : "bg-red-50 text-red-800 border-red-200"
+              }`}
           >
             <div className="flex items-start gap-3">
               <div className="flex-shrink-0">
@@ -82,20 +81,18 @@ export const RegistrationFormHandler = () => {
               </div>
               <div className="flex-1">
                 <h3
-                  className={`text-sm font-semibold ${
-                    submitStatus.type === "success"
-                      ? "text-green-800"
-                      : "text-red-800"
-                  }`}
+                  className={`text-sm font-semibold ${submitStatus.type === "success"
+                    ? "text-green-800"
+                    : "text-red-800"
+                    }`}
                 >
                   {submitStatus.type === "success" ? "Success!" : "Error"}
                 </h3>
                 <p
-                  className={`text-sm mt-1 ${
-                    submitStatus.type === "success"
-                      ? "text-green-700"
-                      : "text-red-700"
-                  }`}
+                  className={`text-sm mt-1 ${submitStatus.type === "success"
+                    ? "text-green-700"
+                    : "text-red-700"
+                    }`}
                 >
                   {submitStatus.message}
                 </p>

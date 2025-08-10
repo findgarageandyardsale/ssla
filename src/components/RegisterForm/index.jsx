@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import { useEffect } from "react";
 import {
   Mail,
   User,
@@ -75,9 +76,33 @@ export const RegisterForm = ({
     console.log("Form data submitted:", data);
     await onSubmit(data);
     reset(); // Reset form after successful submission
+
+    // Clear signature fields by clearing the canvas
+    const canvasElements = document.querySelectorAll('canvas');
+    canvasElements.forEach(canvas => {
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+    });
+
+    // Clear signature data from localStorage
+    localStorage.removeItem('form_signatures');
   };
 
   const watchedValues = watch();
+
+  // Watch for form changes and sync with localStorage
+  useEffect(() => {
+    const subscription = watch((value, { name }) => {
+      if (name === "language" && value.language) {
+        // Save language selections to localStorage for popup synchronization
+        localStorage.setItem("selectedLanguageCategories", JSON.stringify(value.language));
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [watch]);
 
   return (
     <>
@@ -147,14 +172,18 @@ export const RegisterForm = ({
                 <CheckboxField
                   label="Select your language preferences"
                   name="language"
+                  value={watch("language") || []}
                   options={[
-                    { value: "punjabi", label: "Punjabi Language" },
+                    { value: "Punjabi Language", label: "Punjabi Language" },
+                    { value: "Gurmat", label: "Gurmat" },
                     {
-                      value: "gurbani santhya",
+                      value: "Gurbani Santhya",
                       label: "Gurbani Santhya",
                     },
+                    { value: "Keertan", label: "Keertan" },
+
                     {
-                      value: "gurmat(age 18+)",
+                      value: "Gurmat (age 18+)",
                       label: "Gurmat (age 18+)",
                     },
                   ]}
@@ -510,7 +539,7 @@ export const RegisterForm = ({
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <CheckboxField
+                  <RadioField
                     label="Do you speak Punjabi?"
                     name="doYouSpeakPunjabi"
                     required
@@ -525,7 +554,7 @@ export const RegisterForm = ({
                     error={errors.doYouSpeakPunjabi}
                   />
 
-                  <CheckboxField
+                  <RadioField
                     label="Can you read and write Punjabi?"
                     name="canYouReadAndWritePunjabi"
                     required
@@ -566,7 +595,7 @@ export const RegisterForm = ({
                     error={errors.favoriteSikhBook}
                   />
 
-                  <CheckboxField
+                  <RadioField
                     label="How much time will you have everyday to do your homework?"
                     name="howMuchTimeYouWillHaveEverydayToDoYourHomework"
                     required
@@ -640,11 +669,10 @@ export const RegisterForm = ({
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className={`px-12 py-4 rounded-xl text-white font-semibold text-lg transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300 shadow-lg hover:shadow-xl ${
-                    isSubmitting
-                      ? "bg-gray-400 cursor-not-allowed transform-none"
-                      : "bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-700 hover:via-indigo-700 hover:to-purple-700"
-                  }`}
+                  className={`px-12 py-4 rounded-xl text-white font-semibold text-lg transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300 shadow-lg hover:shadow-xl ${isSubmitting
+                    ? "bg-gray-400 cursor-not-allowed transform-none"
+                    : "bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-700 hover:via-indigo-700 hover:to-purple-700"
+                    }`}
                 >
                   {isSubmitting ? (
                     <div className="flex items-center gap-3">

@@ -11,9 +11,9 @@ export const CheckboxField = forwardRef(({
   ...props
 }, ref) => {
   const checkboxClasses = `w-4 h-4 text-blue-600 border-2 rounded focus:ring-2 focus:ring-blue-500 focus:ring-opacity-20 transition-all duration-200 ${className}`;
-  
-  const borderClass = error 
-    ? "border-red-300 focus:border-red-500 focus:ring-red-500" 
+
+  const borderClass = error
+    ? "border-red-300 focus:border-red-500 focus:ring-red-500"
     : "border-gray-300 focus:border-blue-500 focus:ring-blue-500";
 
   // If options are provided, render multiple checkboxes
@@ -31,6 +31,7 @@ export const CheckboxField = forwardRef(({
                 type="checkbox"
                 name={name}
                 value={option.value}
+                checked={Array.isArray(value) ? value.includes(option.value) : false}
                 className={`${checkboxClasses} ${borderClass}`}
                 {...props}
               />

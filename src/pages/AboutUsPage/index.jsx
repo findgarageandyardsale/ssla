@@ -144,8 +144,8 @@ export const AboutUsPage = () => {
   ];
 
   const weeklySchedule = [
-    "Academic and Gurmat Classes: Sunday 9:30 a.m. – 12:50 p.m.",
-    "Gurmat Sangeet & Tabla Classes: Sunday 2:00 p.m. – 4:00 p.m.",
+    "Academic and Gurmat Classes: Sunday, 9:30 a.m. – 12:50 p.m.",
+    "Dilruba and Tabla Classes: Sunday, 2:30 p.m. – 4:30 p.m.",
   ];
 
 
