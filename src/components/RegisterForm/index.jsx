@@ -18,6 +18,7 @@ import { InputField } from "../atoms/InputField";
 import { SelectField } from "../atoms/SelectField";
 import { TextAreaField } from "../atoms/TextAreaField";
 import { CheckboxField } from "../atoms/CheckboxField";
+import { RadioField } from "../atoms/RadioField";
 
 export const RegisterForm = ({
   onSubmit,
@@ -41,6 +42,8 @@ export const RegisterForm = ({
       dateOfBirth: "",
       age: "",
       gender: "",
+      isReturningStudent: "",
+      completedCourses: "",
       fatherName: "",
       motherName: "",
       address: "",
@@ -294,6 +297,33 @@ export const RegisterForm = ({
                       { value: "other", label: "Other" },
                     ]}
                   />
+
+                  <RadioField
+                    label="Returning Student"
+                    name="isReturningStudent"
+                    required
+                    options={[
+                      { value: "yes", label: "Yes" },
+                      { value: "no", label: "No" },
+                    ]}
+                    {...register("isReturningStudent", { required: "Please indicate if you are a returning student" })}
+                    error={errors.isReturningStudent}
+                  />
+
+                  {watchedValues.isReturningStudent === "yes" && (
+                    <div className="md:col-span-2 lg:col-span-3">
+                      <TextAreaField
+                        label="List courses completed at SSLA"
+                        name="completedCourses"
+                        required
+                        placeholder="Please list all courses you have completed at SSLA"
+                        {...register("completedCourses", { 
+                          required: "Please list completed courses for returning students" 
+                        })}
+                        error={errors.completedCourses}
+                      />
+                    </div>
+                  )}
 
                   <InputField
                     label="Father's Name"

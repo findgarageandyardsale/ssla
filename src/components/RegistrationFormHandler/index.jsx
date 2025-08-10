@@ -8,18 +8,40 @@ export const RegistrationFormHandler = () => {
   const [submitStatus, setSubmitStatus] = useState(null);
 
   const handleFormSubmit = async (formData) => {
-    console.log("Form submission started");
-    console.log("Form data:", formData);
+    console.log("🎯 RegistrationFormHandler: Form submission started");
+    console.log("📊 Form data received:", formData);
+    console.log("🔍 Form data validation check...");
+
+    // Check for any obvious issues
+    if (!formData.email) {
+      console.error("❌ No email provided");
+      setSubmitStatus({
+        type: "error",
+        message: "Email is required for registration.",
+      });
+      return;
+    }
+
+    if (!formData.firstName || !formData.lastName) {
+      console.error("❌ Missing name information");
+      setSubmitStatus({
+        type: "error",
+        message: "First and last name are required.",
+      });
+      return;
+    }
+
+    console.log("✅ Basic validation passed, proceeding with submission...");
 
     setIsSubmitting(true);
     setSubmitStatus(null);
 
     try {
-      console.log("Starting email submission...");
+      console.log("📧 Starting email submission...");
 
       // Send registration email
       const result = await sendRegistrationEmail(formData);
-      console.log("Email result:", result);
+      console.log("📨 Email result:", result);
 
       setSubmitStatus({
         type: "success",
@@ -27,20 +49,18 @@ export const RegistrationFormHandler = () => {
           "Registration submitted successfully! A confirmation email has been sent to your email address.",
       });
 
-      console.log("Form submitted successfully");
+      console.log("🎉 Form submitted successfully");
 
       // Reset status after successful submission
       setTimeout(() => {
         setSubmitStatus(null);
       }, 5000);
     } catch (error) {
-      console.error("Error submitting form:", error);
-      console.error("Error details:", {
+      console.error("💥 Error submitting form:", error);
+      console.error("🚨 Error details:", {
         message: error.message,
         stack: error.stack,
         name: error.name,
-        Mail,
-        TestTube,
       });
 
       setSubmitStatus({

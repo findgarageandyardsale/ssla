@@ -75,10 +75,64 @@ export const RegistrationForm = ({ onSubmit, isSubmitting }) => {
   };
 
   const onFormSubmit = async (data) => {
+    console.log("🚀 Form submission started");
+    console.log("📝 Form data:", data);
+    console.log("🔍 Checking for potential issues...");
+
+    // Check if contact and emergency info are the same
+    const contactInfo = {
+      name: `${data.firstName} ${data.lastName}`,
+      phone: data.cellPhoneNumber || data.homePhoneNumber,
+      address: data.streetAddress || data.address,
+      city: data.city,
+      zipCode: data.zipCode
+    };
+
+    const emergencyInfo = {
+      name: data.emergencyContactName,
+      phone: data.emergencyContactPhoneNumber,
+      address: data.emergencyContactAddress,
+      city: data.emergencyContactCity,
+      zipCode: data.emergencyContactZipCode
+    };
+
+    console.log("📞 Contact Info:", contactInfo);
+    console.log("🚨 Emergency Info:", emergencyInfo);
+
+    // Check for missing required fields
+    const requiredFields = [
+      'firstName', 'lastName', 'dateOfBirth', 'age', 'gender', 'isReturningStudent',
+      'fatherName', 'motherName', 'address', 'city', 'state', 'zipCode',
+      'homePhoneNumber', 'cellPhoneNumber', 'email',
+      'emergencyContactName', 'emergencyContactPhoneNumber',
+      'emergencyContactAddress', 'emergencyContactCity', 'emergencyContactZipCode',
+      'language', 'doYouSpeakPunjabi', 'canYouReadAndWritePunjabi',
+      'howMuchTimeYouWillHaveEverydayToDoYourHomework',
+      'studentSignatureDate', 'parentSignatureDate'
+    ];
+
+    // Add conditional required field for returning students
+    if (data.isReturningStudent === 'yes' && !data.completedCourses) {
+      console.log("❌ Missing completed courses for returning student");
+    }
+
+    const missingFields = requiredFields.filter(field => !data[field]);
+    if (missingFields.length > 0) {
+      console.log("❌ Missing required fields:", missingFields);
+    } else {
+      console.log("✅ All required fields are filled");
+    }
+
     if (onSubmit) {
-      await onSubmit(data);
-      // Reset form and clear localStorage after successful submission
-      resetFormAndStorage();
+      try {
+        console.log("📤 Calling onSubmit...");
+        await onSubmit(data);
+        console.log("✅ onSubmit completed successfully");
+        // Reset form and clear localStorage after successful submission
+        resetFormAndStorage();
+      } catch (error) {
+        console.error("❌ Error during form submission:", error);
+      }
     }
   };
 
@@ -93,7 +147,7 @@ export const RegistrationForm = ({ onSubmit, isSubmitting }) => {
             <GraduationCap className="h-8 w-8 text-white" />
           </div>
           <h1 className="text-3xl font-bold text-gray-800 mb-2">
-            Language Registration Form
+            Registration Form
           </h1>
           <p className="text-gray-600 max-w-2xl mx-auto">
             Welcome to our school! Please fill out the form below to complete
@@ -225,6 +279,33 @@ export const RegistrationForm = ({ onSubmit, isSubmitting }) => {
                   {...register("gender", { required: "Gender is required" })}
                   error={errors.gender}
                 />
+
+                <RadioField
+                  label="Returning Student"
+                  name="isReturningStudent"
+                  required
+                  options={[
+                    { value: "yes", label: "Yes" },
+                    { value: "no", label: "No" },
+                  ]}
+                  {...register("isReturningStudent", { required: "Please indicate if you are a returning student" })}
+                  error={errors.isReturningStudent}
+                />
+
+                {watchedValues.isReturningStudent === "yes" && (
+                  <div className="md:col-span-2">
+                    <TextAreaField
+                      label="List courses completed at SSLA"
+                      name="completedCourses"
+                      required
+                      placeholder="Please list all courses you have completed at SSLA"
+                      {...register("completedCourses", {
+                        required: "Please list completed courses for returning students"
+                      })}
+                      error={errors.completedCourses}
+                    />
+                  </div>
+                )}
               </div>
             </div>
 

@@ -81,9 +81,8 @@ const generateEmailHTML = (data) => {
             <div class="section-title">👤 Personal Information</div>
             <div class="field">
               <div class="field-label">Full Name</div>
-              <div class="field-value">${data.firstName} ${
-    data.middleName || ""
-  } ${data.lastName}</div>
+              <div class="field-value">${data.firstName} ${data.middleName || ""
+    } ${data.lastName}</div>
             </div>
             <div class="field">
               <div class="field-label">Date of Birth</div>
@@ -98,10 +97,19 @@ const generateEmailHTML = (data) => {
               <div class="field-value">${data.gender}</div>
             </div>
             <div class="field">
+              <div class="field-label">Returning Student</div>
+              <div class="field-value">${data.isReturningStudent === 'yes' ? 'Yes' : 'No'}</div>
+            </div>
+            ${data.isReturningStudent === 'yes' ? `
+            <div class="field">
+              <div class="field-label">Courses Completed at SSLA</div>
+              <div class="field-value">${data.completedCourses || 'Not specified'}</div>
+            </div>
+            ` : ''}
+            <div class="field">
               <div class="field-label">Occupation</div>
-              <div class="field-value">${
-                data.occupation || "Not specified"
-              }</div>
+              <div class="field-value">${data.occupation || "Not specified"
+    }</div>
             </div>
           </div>
 
@@ -127,33 +135,28 @@ const generateEmailHTML = (data) => {
             </div>
             <div class="field">
               <div class="field-label">Home Phone</div>
-              <div class="field-value">${
-                data.homePhoneNumber || "Not provided"
-              }</div>
+              <div class="field-value">${data.homePhoneNumber || "Not provided"
+    }</div>
             </div>
             <div class="field">
               <div class="field-label">Cell Phone</div>
-              <div class="field-value">${
-                data.cellPhoneNumber || "Not provided"
-              }</div>
+              <div class="field-value">${data.cellPhoneNumber || "Not provided"
+    }</div>
             </div>
             <div class="field">
               <div class="field-label">Street Address</div>
-              <div class="field-value">${
-                data.streetAddress || "Not provided"
-              }</div>
+              <div class="field-value">${data.streetAddress || "Not provided"
+    }</div>
             </div>
             <div class="field">
               <div class="field-label">Apartment No</div>
-              <div class="field-value">${
-                data.apartmentNo || "Not provided"
-              }</div>
+              <div class="field-value">${data.apartmentNo || "Not provided"
+    }</div>
             </div>
             <div class="field">
               <div class="field-label">City & State</div>
-              <div class="field-value">${data.city || "Not provided"}, ${
-    data.state || "Not provided"
-  } ${data.zipCode || "Not provided"}</div>
+              <div class="field-value">${data.city || "Not provided"}, ${data.state || "Not provided"
+    } ${data.zipCode || "Not provided"}</div>
             </div>
           </div>
 
@@ -162,33 +165,28 @@ const generateEmailHTML = (data) => {
             <div class="section-title">🚨 Emergency Contact</div>
             <div class="field">
               <div class="field-label">Emergency Contact Name</div>
-              <div class="field-value">${
-                data.emergencyContactName || "Not provided"
-              }</div>
+              <div class="field-value">${data.emergencyContactName || "Not provided"
+    }</div>
             </div>
             <div class="field">
               <div class="field-label">Emergency Phone</div>
-              <div class="field-value">${
-                data.emergencyContactPhoneNumber || "Not provided"
-              }</div>
+              <div class="field-value">${data.emergencyContactPhoneNumber || "Not provided"
+    }</div>
             </div>
             <div class="field">
               <div class="field-label">Emergency Address</div>
-              <div class="field-value">${
-                data.emergencyContactAddress || "Not provided"
-              }</div>
+              <div class="field-value">${data.emergencyContactAddress || "Not provided"
+    }</div>
             </div>
             <div class="field">
               <div class="field-label">Emergency Apartment No</div>
-              <div class="field-value">${
-                data.emergencyContactApartmentNo || "Not provided"
-              }</div>
+              <div class="field-value">${data.emergencyContactApartmentNo || "Not provided"
+    }</div>
             </div>
             <div class="field">
               <div class="field-label">Emergency City</div>
-              <div class="field-value">${
-                data.emergencyContactCity || "Not provided"
-              }, ${data.emergencyContactZipCode || "Not provided"}</div>
+              <div class="field-value">${data.emergencyContactCity || "Not provided"
+    }, ${data.emergencyContactZipCode || "Not provided"}</div>
             </div>
           </div>
 
@@ -197,23 +195,20 @@ const generateEmailHTML = (data) => {
             <div class="section-title">📚 Language Preferences</div>
             <div class="field">
               <div class="field-label">Language Selection</div>
-              <div class="field-value">${
-                Array.isArray(data.language)
-                  ? data.language.join(", ")
-                  : data.language || "Not specified"
-              }</div>
+              <div class="field-value">${Array.isArray(data.language)
+      ? data.language.join(", ")
+      : data.language || "Not specified"
+    }</div>
             </div>
             <div class="field">
               <div class="field-label">Speak Punjabi</div>
-              <div class="field-value">${
-                data.doYouSpeakPunjabi || "Not specified"
-              }</div>
+              <div class="field-value">${data.doYouSpeakPunjabi || "Not specified"
+    }</div>
             </div>
             <div class="field">
               <div class="field-label">Read & Write Punjabi</div>
-              <div class="field-value">${
-                data.canYouReadAndWritePunjabi || "Not specified"
-              }</div>
+              <div class="field-value">${data.canYouReadAndWritePunjabi || "Not specified"
+    }</div>
             </div>
           </div>
 
@@ -222,22 +217,19 @@ const generateEmailHTML = (data) => {
             <div class="section-title">💭 Additional Information</div>
             <div class="field">
               <div class="field-label">What inspires you to learn Punjabi?</div>
-              <div class="field-value">${
-                data.whatInspiresYou || "Not provided"
-              }</div>
+              <div class="field-value">${data.whatInspiresYou || "Not provided"
+    }</div>
             </div>
             <div class="field">
               <div class="field-label">Favorite Sikh Book</div>
-              <div class="field-value">${
-                data.favoriteSikhBook || "Not provided"
-              }</div>
+              <div class="field-value">${data.favoriteSikhBook || "Not provided"
+    }</div>
             </div>
             <div class="field">
               <div class="field-label">Daily Homework Time</div>
-              <div class="field-value">${
-                data.howMuchTimeYouWillHaveEverydayToDoYourHomework ||
-                "Not provided"
-              }</div>
+              <div class="field-value">${data.howMuchTimeYouWillHaveEverydayToDoYourHomework ||
+    "Not provided"
+    }</div>
             </div>
           </div>
 
@@ -246,34 +238,30 @@ const generateEmailHTML = (data) => {
             <div class="section-title">✍️ Signature Information</div>
             <div class="field">
               <div class="field-label">Student Signature Date</div>
-              <div class="field-value">${
-                data.studentSignatureDate || "Not provided"
-              }</div>
+              <div class="field-value">${data.studentSignatureDate || "Not provided"
+    }</div>
             </div>
             <div class="field">
               <div class="field-label">Student Signature</div>
               <div class="field-value">
-                ${
-                  studentSignatureUrl && studentSignatureUrl !== "Not uploaded"
-                    ? `<a href="${studentSignatureUrl}" target="_blank" style="color: #3b82f6; text-decoration: underline;">View Student Signature</a>`
-                    : "Not uploaded"
-                }
+                ${studentSignatureUrl && studentSignatureUrl !== "Not uploaded"
+      ? `<a href="${studentSignatureUrl}" target="_blank" style="color: #3b82f6; text-decoration: underline;">View Student Signature</a>`
+      : "Not uploaded"
+    }
               </div>
             </div>
             <div class="field">
               <div class="field-label">Parent/Guardian Signature Date</div>
-              <div class="field-value">${
-                data.parentSignatureDate || "Not provided"
-              }</div>
+              <div class="field-value">${data.parentSignatureDate || "Not provided"
+    }</div>
             </div>
             <div class="field">
               <div class="field-label">Parent/Guardian Signature</div>
               <div class="field-value">
-                ${
-                  parentSignatureUrl && parentSignatureUrl !== "Not uploaded"
-                    ? `<a href="${parentSignatureUrl}" target="_blank" style="color: #3b82f6; text-decoration: underline;">View Parent Signature</a>`
-                    : "Not uploaded"
-                }
+                ${parentSignatureUrl && parentSignatureUrl !== "Not uploaded"
+      ? `<a href="${parentSignatureUrl}" target="_blank" style="color: #3b82f6; text-decoration: underline;">View Parent Signature</a>`
+      : "Not uploaded"
+    }
               </div>
             </div>
           </div>
@@ -284,16 +272,16 @@ const generateEmailHTML = (data) => {
             <div class="field">
               <div class="field-label">Submission Date</div>
               <div class="field-value">${new Date().toLocaleDateString(
-                "en-US",
-                {
-                  weekday: "long",
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                  hour: "2-digit",
-                  minute: "2-digit",
-                }
-              )}</div>
+      "en-US",
+      {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      }
+    )}</div>
             </div>
           </div>
         </div>
@@ -304,13 +292,11 @@ const generateEmailHTML = (data) => {
             Thank you for choosing <span class="school-name">SSLA School</span>
           </p>
           <p class="contact-info">
-            We will contact you soon at <strong>${
-              data.cellPhoneNumber ||
-              data.homePhoneNumber ||
-              "the provided contact information"
-            }</strong> or <strong>${
-    data.email || "the provided email address"
-  }</strong>
+            We will contact you soon at <strong>${data.cellPhoneNumber ||
+    data.homePhoneNumber ||
+    "the provided contact information"
+    }</strong> or <strong>${data.email || "the provided email address"
+    }</strong>
           </p>
           <p class="contact-info" style="margin-top: 15px;">
             This is an automated confirmation email. Please do not reply to this message.
@@ -346,6 +332,8 @@ Name: ${data.firstName} ${data.middleName || ""} ${data.lastName}
 Date of Birth: ${data.dateOfBirth}
 Age: ${data.age} years old
 Gender: ${data.gender}
+Returning Student: ${data.isReturningStudent === 'yes' ? 'Yes' : 'No'}
+${data.isReturningStudent === 'yes' ? `Courses Completed at SSLA: ${data.completedCourses || 'Not specified'}` : ''}
 Occupation: ${data.occupation || "Not specified"}
 
 === FAMILY INFORMATION ===
@@ -365,48 +353,42 @@ Emergency Contact Name: ${data.emergencyContactName || "-"}
 Emergency Phone: ${data.emergencyContactPhoneNumber || "-"}
 Emergency Address: ${data.emergencyContactAddress || "-"}
 Emergency Apartment No: ${data.emergencyContactApartmentNo || "-"}
-Emergency City: ${data.emergencyContactCity || "-"}, ${
-    data.emergencyContactZipCode || "-"
-  }
+Emergency City: ${data.emergencyContactCity || "-"}, ${data.emergencyContactZipCode || "-"
+    }
 
 === COURSES ===
-Courses Selection: ${
-    Array.isArray(data.language)
+Courses Selection: ${Array.isArray(data.language)
       ? data.language.join(", ")
       : data.language || "-"
-  }
+    }
 Speak Punjabi: ${data.doYouSpeakPunjabi || "-"}
 Read & Write Punjabi: ${data.canYouReadAndWritePunjabi || "-"}
 
 === ADDITIONAL INFORMATION ===
 What inspires you to learn Punjabi: ${data.whatInspiresYou || "-"}
 Favorite Sikh Book: ${data.favoriteSikhBook || "-"}
-Daily Homework Time: ${
-    data.howMuchTimeYouWillHaveEverydayToDoYourHomework || "-"
-  }
+Daily Homework Time: ${data.howMuchTimeYouWillHaveEverydayToDoYourHomework || "-"
+    }
 
 === SIGNATURE INFORMATION ===
 Student Signature Date: ${data.studentSignatureDate || "-"}
-Student Signature: ${
-    studentSignatureUrl && studentSignatureUrl !== "Not uploaded"
+Student Signature: ${studentSignatureUrl && studentSignatureUrl !== "Not uploaded"
       ? studentSignatureUrl
       : "Not uploaded"
-  }
+    }
 Parent/Guardian Signature Date: ${data.parentSignatureDate || "Not provided"}
-Parent/Guardian Signature: ${
-    parentSignatureUrl && parentSignatureUrl !== "Not uploaded"
+Parent/Guardian Signature: ${parentSignatureUrl && parentSignatureUrl !== "Not uploaded"
       ? parentSignatureUrl
       : "Not uploaded"
-  }
+    }
 
 === SUBMISSION DETAILS ===
 Submitted on: ${new Date().toLocaleString()}
 
-We will contact you soon at ${
-    data.cellPhoneNumber ||
+We will contact you soon at ${data.cellPhoneNumber ||
     data.homePhoneNumber ||
     "the provided contact information"
-  } or ${data.email || "the provided email address"}.
+    } or ${data.email || "the provided email address"}.
 
 Best regards,
 SSLA School Registration Team
