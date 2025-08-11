@@ -139,17 +139,17 @@ export const RegistrationForm = ({ onSubmit, isSubmitting }) => {
   const watchedValues = watch();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 py-8 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 py-4 sm:py-8 px-2 sm:px-4">
       <div className="max-w-4xl mx-auto">
         {/* Header Section */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full mb-4">
-            <GraduationCap className="h-8 w-8 text-white" />
+        <div className="text-center mb-6 sm:mb-8">
+          <div className="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full mb-3 sm:mb-4">
+            <GraduationCap className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
           </div>
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-2">
             Registration Form
           </h1>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+          <p className="text-sm sm:text-base text-gray-600 max-w-2xl mx-auto px-2">
             Welcome to our school! Please fill out the form below to complete
             your registration. We&apos;re excited to have you join our
             community.
@@ -157,15 +157,15 @@ export const RegistrationForm = ({ onSubmit, isSubmitting }) => {
         </div>
 
         {/* Main Form */}
-        <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
-          <form onSubmit={handleSubmit(onFormSubmit)} className="p-8">
+        <div className="bg-white rounded-xl sm:rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+          <form onSubmit={handleSubmit(onFormSubmit)} className="p-4 sm:p-6 lg:p-8">
             {/* Language Selection */}
-            <div className="mb-8 p-6 bg-gradient-to-r from-orange-50 to-yellow-50 rounded-xl border border-orange-100">
+            <div className="mb-6 sm:mb-8 p-4 sm:p-6 bg-gradient-to-r from-orange-50 to-yellow-50 rounded-xl border border-orange-100">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-yellow-500 rounded-full flex items-center justify-center">
-                  <BookOpen className="h-5 w-5 text-white" />
+                <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-orange-500 to-yellow-500 rounded-full flex items-center justify-center">
+                  <BookOpen className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
                 </div>
-                <h2 className="text-xl font-semibold text-gray-800">
+                <h2 className="text-lg sm:text-xl font-semibold text-gray-800">
                   Courses
                 </h2>
               </div>
@@ -196,17 +196,17 @@ export const RegistrationForm = ({ onSubmit, isSubmitting }) => {
             </div>
 
             {/* Personal Information */}
-            <div className="mb-8 p-6 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-100">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center">
-                  <User className="h-5 w-5 text-white" />
+            <div className="mb-6 sm:mb-8 p-4 sm:p-6 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-100">
+              <div className="flex items-center gap-3 mb-4 sm:mb-6">
+                <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center">
+                  <User className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
                 </div>
-                <h2 className="text-xl font-semibold text-gray-800">
+                <h2 className="text-lg sm:text-xl font-semibold text-gray-800">
                   Personal Information
                 </h2>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                 <InputField
                   label="First Name"
                   name="firstName"
@@ -310,17 +310,17 @@ export const RegistrationForm = ({ onSubmit, isSubmitting }) => {
             </div>
 
             {/* Family Information */}
-            <div className="mb-8 p-6 bg-gradient-to-r from-red-50 to-pink-50 rounded-xl border border-red-100">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 bg-gradient-to-br from-red-500 to-pink-600 rounded-full flex items-center justify-center">
-                  <User className="h-5 w-5 text-white" />
+            <div className="mb-6 sm:mb-8 p-4 sm:p-6 bg-gradient-to-r from-red-50 to-pink-50 rounded-xl border border-red-100">
+              <div className="flex items-center gap-3 mb-4 sm:mb-6">
+                <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-red-500 to-pink-600 rounded-full flex items-center justify-center">
+                  <User className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
                 </div>
-                <h2 className="text-xl font-semibold text-gray-800">
+                <h2 className="text-lg sm:text-xl font-semibold text-gray-800">
                   Family Information
                 </h2>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                 <InputField
                   label="Father Name"
                   name="fatherName"
@@ -348,17 +348,17 @@ export const RegistrationForm = ({ onSubmit, isSubmitting }) => {
             </div>
 
             {/* Contact Information */}
-            <div className="mb-8 p-6 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-100">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center">
-                  <MapPin className="h-5 w-5 text-white" />
+            <div className="mb-6 sm:mb-8 p-4 sm:p-6 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-100">
+              <div className="flex items-center gap-3 mb-4 sm:mb-6">
+                <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center">
+                  <MapPin className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
                 </div>
-                <h2 className="text-xl font-semibold text-gray-800">
+                <h2 className="text-lg sm:text-xl font-semibold text-gray-800">
                   Contact Information
                 </h2>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                 <div className="md:col-span-2">
                   <InputField
                     label="Address"
@@ -452,17 +452,17 @@ export const RegistrationForm = ({ onSubmit, isSubmitting }) => {
             </div>
 
             {/* Emergency Contact Information */}
-            <div className="mb-8 p-6 bg-gradient-to-r from-yellow-50 to-amber-50 rounded-xl border border-yellow-100">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 bg-gradient-to-br from-yellow-500 to-amber-600 rounded-full flex items-center justify-center">
-                  <User className="h-5 w-5 text-white" />
+            <div className="mb-6 sm:mb-8 p-4 sm:p-6 bg-gradient-to-r from-yellow-50 to-amber-50 rounded-xl border border-yellow-100">
+              <div className="flex items-center gap-3 mb-4 sm:mb-6">
+                <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-yellow-500 to-amber-600 rounded-full flex items-center justify-center">
+                  <User className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
                 </div>
-                <h2 className="text-xl font-semibold text-gray-800">
+                <h2 className="text-lg sm:text-xl font-semibold text-gray-800">
                   Emergency Contact Information
                 </h2>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                 <InputField
                   label="Emergency Contact Name"
                   name="emergencyContactName"
@@ -536,17 +536,17 @@ export const RegistrationForm = ({ onSubmit, isSubmitting }) => {
             </div>
 
             {/* Extra Information */}
-            <div className="mb-8 p-6 bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl border border-purple-100">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-full flex items-center justify-center">
-                  <User className="h-5 w-5 text-white" />
+            <div className="mb-6 sm:mb-8 p-4 sm:p-6 bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl border border-purple-100">
+              <div className="flex items-center gap-3 mb-4 sm:mb-6">
+                <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-full flex items-center justify-center">
+                  <User className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
                 </div>
-                <h2 className="text-xl font-semibold text-gray-800">
+                <h2 className="text-lg sm:text-xl font-semibold text-gray-800">
                   Extra Information
                 </h2>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                 <RadioField
                   label="Do you speak Punjabi?"
                   name="doYouSpeakPunjabi"
@@ -623,23 +623,23 @@ export const RegistrationForm = ({ onSubmit, isSubmitting }) => {
             </div>
 
             {/* Signature Section */}
-            <div className="mb-8 p-6 bg-gradient-to-r from-indigo-50 to-blue-50 rounded-xl border border-indigo-100">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-blue-600 rounded-full flex items-center justify-center">
-                  <User className="h-5 w-5 text-white" />
+            <div className="mb-6 sm:mb-8 p-4 sm:p-6 bg-gradient-to-r from-indigo-50 to-blue-50 rounded-xl border border-indigo-100">
+              <div className="flex items-center gap-3 mb-4 sm:mb-6">
+                <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-indigo-500 to-blue-600 rounded-full flex items-center justify-center">
+                  <User className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
                 </div>
-                <h2 className="text-xl font-semibold text-gray-800">
+                <h2 className="text-lg sm:text-xl font-semibold text-gray-800">
                   Digital Signatures
                 </h2>
               </div>
 
-              <div className="space-y-8">
+              <div className="space-y-6 sm:space-y-8">
                 {/* Student Signature */}
-                <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
-                  <h3 className="text-lg font-semibold text-gray-800 mb-4">
+                <div className="bg-white p-4 sm:p-6 rounded-xl border border-gray-100 shadow-sm">
+                  <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-4">
                     Student Signature
                   </h3>
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
                     <SignatureField
                       label="Draw Your Signature"
                       name="studentSignature"
@@ -650,7 +650,7 @@ export const RegistrationForm = ({ onSubmit, isSubmitting }) => {
                         }
                       }}
                     />
-                    <div className="space-y-4">
+                    <div className="space-y-3 sm:space-y-4">
                       <InputField
                         label="Date of Signature"
                         name="studentSignatureDate"
@@ -662,7 +662,7 @@ export const RegistrationForm = ({ onSubmit, isSubmitting }) => {
                         })}
                         error={errors.studentSignatureDate}
                       />
-                      <div className="text-sm text-gray-600 bg-gray-50 p-3 rounded-lg">
+                      <div className="text-xs sm:text-sm text-gray-600 bg-gray-50 p-3 rounded-lg">
                         <p className="font-medium mb-1">Instructions:</p>
                         <ul className="list-disc list-inside space-y-1">
                           <li>Draw your signature in the canvas above</li>
@@ -679,11 +679,11 @@ export const RegistrationForm = ({ onSubmit, isSubmitting }) => {
                 </div>
 
                 {/* Parent/Guardian Signature */}
-                <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
-                  <h3 className="text-lg font-semibold text-gray-800 mb-4">
+                <div className="bg-white p-4 sm:p-6 rounded-xl border border-gray-100 shadow-sm">
+                  <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-4">
                     Parent/Guardian Signature
                   </h3>
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
                     <SignatureField
                       label="Draw Parent/Guardian Signature"
                       name="parentSignature"
@@ -694,7 +694,7 @@ export const RegistrationForm = ({ onSubmit, isSubmitting }) => {
                         }
                       }}
                     />
-                    <div className="space-y-4">
+                    <div className="space-y-3 sm:space-y-4">
                       <InputField
                         label="Date of Parent/Guardian Signature"
                         name="parentSignatureDate"
@@ -706,7 +706,7 @@ export const RegistrationForm = ({ onSubmit, isSubmitting }) => {
                         })}
                         error={errors.parentSignatureDate}
                       />
-                      <div className="text-sm text-gray-600 bg-gray-50 p-3 rounded-lg">
+                      <div className="text-xs sm:text-sm text-gray-600 bg-gray-50 p-3 rounded-lg">
                         <p className="font-medium mb-1">Instructions:</p>
                         <ul className="list-disc list-inside space-y-1">
                           <li>
@@ -728,11 +728,11 @@ export const RegistrationForm = ({ onSubmit, isSubmitting }) => {
             </div>
 
             {/* Submit Button */}
-            <div className="flex justify-center pt-6">
+            <div className="flex justify-center pt-4 sm:pt-6">
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105"
+                className="w-full sm:w-auto bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105 text-sm sm:text-base"
               >
                 {isSubmitting ? "Submitting..." : "Submit Registration"}
               </button>
@@ -742,11 +742,11 @@ export const RegistrationForm = ({ onSubmit, isSubmitting }) => {
 
         {/* Debug Section (Development Only) */}
         {process.env.NODE_ENV === "development" && (
-          <div className="mt-8 p-6 bg-gray-50 rounded-xl border border-gray-200">
-            <h3 className="text-lg font-semibold text-gray-700 mb-4">
+          <div className="mt-6 sm:mt-8 p-4 sm:p-6 bg-gray-50 rounded-xl border border-gray-200">
+            <h3 className="text-base sm:text-lg font-semibold text-gray-700 mb-4">
               Form Data (Debug)
             </h3>
-            <pre className="text-sm text-gray-600 overflow-auto bg-white p-4 rounded-lg border">
+            <pre className="text-xs sm:text-sm text-gray-600 overflow-auto bg-white p-3 sm:p-4 rounded-lg border">
               {JSON.stringify(watchedValues, null, 2)}
             </pre>
           </div>

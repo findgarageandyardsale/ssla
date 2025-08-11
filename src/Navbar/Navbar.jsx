@@ -83,8 +83,15 @@ export const Navbar = ({ setIsOpenModal, setIsOpenCalendarModal }) => {
   // Handle click outside to close popover
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (showRegisterPopover && !event.target.closest(".register-popover")) {
-        setShowRegisterPopover(false);
+      if (showRegisterPopover) {
+        // Check if the click is within the popover or on form elements
+        const isWithinPopover = event.target.closest(".register-popover");
+        const isFormElement = event.target.closest("input, label, button, select, textarea");
+
+        // Only close if the click is outside the popover and not on form elements
+        if (!isWithinPopover && !isFormElement) {
+          setShowRegisterPopover(false);
+        }
       }
     };
 
@@ -233,7 +240,6 @@ export const Navbar = ({ setIsOpenModal, setIsOpenCalendarModal }) => {
                             label: "Gurbani Santhya",
                           },
                           { value: "Keertan", label: "Keertan" },
-
                           {
                             value: "Gurmat (age 18+)",
                             label: "Gurmat (age 18+)",
@@ -246,6 +252,7 @@ export const Navbar = ({ setIsOpenModal, setIsOpenCalendarModal }) => {
                               value={option.value}
                               checked={selectedGurmatSangeetCategory.includes(option.value)}
                               onChange={(e) => {
+                                e.stopPropagation(); // Prevent event bubbling
                                 let newSelection;
                                 if (e.target.checked) {
                                   newSelection = [...selectedGurmatSangeetCategory, option.value];
@@ -256,6 +263,7 @@ export const Navbar = ({ setIsOpenModal, setIsOpenCalendarModal }) => {
                                 // Save to localStorage for form synchronization
                                 localStorage.setItem("selectedLanguageCategories", JSON.stringify(newSelection));
                               }}
+                              onClick={(e) => e.stopPropagation()} // Prevent click event from bubbling
                               className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                             />
                             <span className="text-sm text-gray-700">{option.label}</span>
@@ -417,27 +425,15 @@ export const Navbar = ({ setIsOpenModal, setIsOpenCalendarModal }) => {
 
                 {/* Mobile Registration Popover */}
                 {showRegisterPopover && (
-                  <div className="mt-2 bg-gray-50 rounded-lg p-3">
-                    {/* Language Registration Section */}
+                  <div className="mt-2 bg-gray-50 rounded-lg p-3 register-popover">
+                    {/* Courses Section */}
                     <div>
                       <h3 className="text-sm font-semibold text-green-600 mb-2 bg-green-100 p-2 rounded-lg">
-                        Language Registration
+                        Courses
                       </h3>
 
-                      <RadioField
-                        label=""
-                        name="gurmatCategoryMobile"
-                        value={selectedGurmatSangeetCategory}
-                        onChange={(e) => {
-                          setSelectedGurmatSangeetCategory(e.target.value);
-                          setSelectedGurmatSangeetInstrument(null);
-                          const params = new URLSearchParams();
-                          params.append("category", e.target.value);
-                          navigate(`/register-form?${params.toString()}`);
-                          setIsOpen(false);
-                          setShowRegisterPopover(false);
-                        }}
-                        options={[
+                      <div className="space-y-2">
+                        {[
                           { value: "Punjabi Language", label: "Punjabi Language" },
                           { value: "Gurmat", label: "Gurmat" },
                           {
@@ -445,42 +441,63 @@ export const Navbar = ({ setIsOpenModal, setIsOpenCalendarModal }) => {
                             label: "Gurbani Santhya",
                           },
                           { value: "Keertan", label: "Keertan" },
-
                           {
                             value: "Gurmat (age 18+)",
                             label: "Gurmat (age 18+)",
                           },
-                        ]}
-                        className="space-y-1"
-                      />
-                    </div>
-                    {/* Gurmat Sangeet Section */}
-                    <div className="mb-4">
-                      <h3 className="text-sm font-semibold text-blue-600 mb-2 bg-blue-100 p-2 rounded-lg">
-                        Gurmat Sangeet Registration
-                      </h3>
+                        ].map((option) => (
+                          <label key={option.value} className="flex items-center gap-2 cursor-pointer">
+                            <input
+                              type="checkbox"
+                              name="gurmatCategory"
+                              value={option.value}
+                              checked={selectedGurmatSangeetCategory.includes(option.value)}
+                              onChange={(e) => {
+                                e.stopPropagation(); // Prevent event bubbling
+                                let newSelection;
+                                if (e.target.checked) {
+                                  newSelection = [...selectedGurmatSangeetCategory, option.value];
+                                } else {
+                                  newSelection = selectedGurmatSangeetCategory.filter(val => val !== option.value);
+                                }
+                                setSelectedGurmatSangeetCategory(newSelection);
+                                // Save to localStorage for form synchronization
+                                localStorage.setItem("selectedLanguageCategories", JSON.stringify(newSelection));
+                              }}
+                              onClick={(e) => e.stopPropagation()} // Prevent click event from bubbling
+                              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                            />
+                            <span className="text-sm text-gray-700">{option.label}</span>
+                          </label>
+                        ))}
+                      </div>
 
-                      <RadioField
-                        label=""
-                        name="gurmatInstrumentMobile"
-                        value={selectedGurmatSangeetInstrument}
-                        onChange={(e) => {
-                          setSelectedGurmatSangeetInstrument(e.target.value);
-                          setSelectedGurmatSangeetCategory(null);
-                          const params = new URLSearchParams();
-                          params.append("instrument", e.target.value);
-                          navigate(`/gs-register-form?${params.toString()}`);
-                          setIsOpen(false);
-                          setShowRegisterPopover(false);
+                      {selectedGurmatSangeetCategory.length > 0 && (
+                        <button
+                          onClick={() => {
+                            const params = new URLSearchParams();
+                            // Pass all selected categories as comma-separated string
+                            params.append("category", selectedGurmatSangeetCategory.join(","));
+                            navigate(`/register-form?${params.toString()}`);
+                            setIsOpen(false);
+                            setShowRegisterPopover(false);
+                          }}
+                          className="mt-3 w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors text-sm"
+                        >
+                          Continue with Selection ({selectedGurmatSangeetCategory.length} selected)
+                        </button>
+                      )}
+
+                      {/* Clear All Button */}
+                      <button
+                        onClick={() => {
+                          setSelectedGurmatSangeetCategory([]);
+                          localStorage.removeItem("selectedLanguageCategories");
                         }}
-                        options={[
-                          { value: "vocal", label: "Vocal" },
-                          { value: "tabla", label: "Tabla" },
-                          { value: "dilruba", label: "Dilruba" },
-                          { value: "rabab", label: "Rabab" }
-                        ]}
-                        className="space-y-1"
-                      />
+                        className="mt-2 w-full bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600 transition-colors text-sm"
+                      >
+                        Clear All Selections
+                      </button>
                     </div>
                   </div>
                 )}
