@@ -26,7 +26,7 @@ import { useEffect, useState } from "react";
 import { ImageDialog } from "./components/ImageFlyer/ImageDialog";
 import ssla_flyer from "./assets/ssla_flyer.jpeg";
 import CalendarPage from "./pages/CalendarPage";
-import calendar from "./assets/calendar.jpg";
+import calendar from "./assets/calendar.jpeg";
 
 const App = () => {
   const [isOpenModal, setIsOpenModal] = useState(false);
