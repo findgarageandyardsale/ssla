@@ -1,73 +1,48 @@
 import { useState, useEffect } from "react";
-import { getGalleryImages } from "../../services/cloudinaryService";
-import { RefreshCw } from "lucide-react";
-
-// Fallback images if Cloudinary is not available
-import image_1 from "../../assets/gallery/1.jpeg";
-import image_2 from "../../assets/gallery/2.jpeg";
-import image_3 from "../../assets/gallery/3.jpeg";
-import image_4 from "../../assets/gallery/4.jpeg";
-import image_5 from "../../assets/gallery/5.jpeg";
-import image_6 from "../../assets/gallery/6.jpeg";
-import image_7 from "../../assets/gallery/7.jpeg";
-import image_8 from "../../assets/gallery/8.jpeg";
-import image_9 from "../../assets/gallery/9.jpeg";
-import image_10 from "../../assets/gallery/10.jpeg";
-import image_11 from "../../assets/gallery/11.jpeg";
-import image_12 from "../../assets/gallery/12.jpeg";
-import image_13 from "../../assets/gallery/13.jpeg";
-import image_14 from "../../assets/gallery/14.jpeg";
-import image_15 from "../../assets/gallery/15.jpeg";
-import image_16 from "../../assets/gallery/16.jpeg";
-import image_17 from "../../assets/gallery/17.jpeg";
-import image_18 from "../../assets/gallery/18.jpeg";
-
-const fallback_images = [
-  { id: 1, image: image_1 },
-  { id: 2, image: image_2 },
-  { id: 3, image: image_3 },
-  { id: 4, image: image_4 },
-  { id: 5, image: image_5 },
-  { id: 6, image: image_6 },
-  { id: 7, image: image_7 },
-  { id: 8, image: image_8 },
-  { id: 9, image: image_9 },
-  { id: 10, image: image_10 },
-  { id: 11, image: image_11 },
-  { id: 12, image: image_12 },
-  { id: 13, image: image_13 },
-  { id: 14, image: image_14 },
-  { id: 15, image: image_15 },
-  { id: 16, image: image_16 },
-  { id: 17, image: image_17 },
-  { id: 18, image: image_18 },
-];
+import { RefreshCw, X } from "lucide-react";
+import { supabaseStorageService } from "../../services/supabaseStorageService";
 
 const ITEMS_PER_PAGE = 9;
 
 export const GalleryPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [galleryImages, setGalleryImages] = useState(fallback_images);
-  const [loading, setLoading] = useState(false);
+  const [galleryImages, setGalleryImages] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [showDialog, setShowDialog] = useState(false);
 
-  // useEffect(() => {
-  //   const fetchImages = async () => {
-  //     setLoading(true);
-  //     try {
-  //       const result = await getGalleryImages();
-  //       if (result.success && result.images.length > 0) {
-  //         setGalleryImages(result.images);
-  //       }
-  //     } catch (error) {
-  //       console.error('Failed to fetch gallery images:', error);
-  //       // Keep fallback images if fetch fails
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
+  useEffect(() => {
+    fetchImages();
+  }, []);
 
-  //   fetchImages();
-  // }, []);
+  const fetchImages = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const result = await supabaseStorageService.getGalleryImages();
+      if (result.success) {
+        setGalleryImages(result.images);
+      } else {
+        setError(result.error || 'Failed to fetch images');
+      }
+    } catch (error) {
+      console.error('Failed to fetch gallery images:', error);
+      setError('Failed to fetch gallery images');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const openImageDialog = (image) => {
+    setSelectedImage(image);
+    setShowDialog(true);
+  };
+
+  const closeImageDialog = () => {
+    setShowDialog(false);
+    setSelectedImage(null);
+  };
 
   const totalPages = Math.ceil(galleryImages.length / ITEMS_PER_PAGE);
   const paginatedImages = galleryImages.slice(
@@ -91,6 +66,13 @@ export const GalleryPage = () => {
         </h2>
       </div>
 
+      {/* Error Display */}
+      {error && (
+        <div className="max-w-6xl mx-auto mb-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+          {error}
+        </div>
+      )}
+
       {/* Image Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 max-w-6xl mx-auto">
         {loading ? (
@@ -98,53 +80,103 @@ export const GalleryPage = () => {
             <RefreshCw className="h-8 w-8 text-orange-600 animate-spin" />
             <span className="ml-2 text-gray-600">Loading gallery...</span>
           </div>
+        ) : galleryImages.length === 0 ? (
+          <div className="col-span-full text-center py-12 text-gray-500">
+            No images found in gallery
+          </div>
         ) : (
           paginatedImages.map((image) => (
             <div
               key={image.id}
-              className="flex flex-col items-center justify-center"
+              className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 cursor-pointer"
+              onClick={() => openImageDialog(image)}
             >
-              <img
-                src={image.image}
-                alt={`Gallery image ${image.id}`}
-                className="w-full h-auto object-cover rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
-              />
+              <div className="relative group">
+                <img
+                  src={image.url}
+                  alt={image.name}
+                  className="w-full h-64 object-cover"
+                />
+                <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center">
+                  <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-white text-lg font-medium">
+                    Click to view
+                  </div>
+                </div>
+              </div>
             </div>
           ))
         )}
       </div>
 
       {/* Pagination Controls */}
-      <div className="flex justify-center items-center mt-8 gap-4">
-        <button
-          onClick={() => goToPage(currentPage - 1)}
-          disabled={currentPage === 1}
-          className="bg-orange-600 text-white py-2 px-4 rounded-md hover:bg-orange-700 disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          Previous
-        </button>
-
-        {Array.from({ length: totalPages }, (_, index) => (
+      {totalPages > 1 && (
+        <div className="flex justify-center items-center mt-8 gap-4">
           <button
-            key={index + 1}
-            onClick={() => goToPage(index + 1)}
-            className={`py-2 px-4 rounded-md ${currentPage === index + 1
-              ? "bg-orange-700 text-white"
-              : "bg-white text-orange-600 border border-orange-600 hover:bg-orange-50"
-              }`}
+            onClick={() => goToPage(currentPage - 1)}
+            disabled={currentPage === 1}
+            className="bg-orange-600 text-white py-2 px-4 rounded-md hover:bg-orange-700 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {index + 1}
+            Previous
           </button>
-        ))}
 
-        <button
-          onClick={() => goToPage(currentPage + 1)}
-          disabled={currentPage === totalPages}
-          className="bg-orange-600 text-white py-2 px-4 rounded-md hover:bg-orange-700 disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          Next
-        </button>
-      </div>
+          {Array.from({ length: totalPages }, (_, index) => (
+            <button
+              key={index + 1}
+              onClick={() => goToPage(index + 1)}
+              className={`py-2 px-4 rounded-md ${currentPage === index + 1
+                ? "bg-orange-700 text-white"
+                : "bg-white text-orange-600 border border-orange-600 hover:bg-orange-50"
+                }`}
+            >
+              {index + 1}
+            </button>
+          ))}
+
+          <button
+            onClick={() => goToPage(currentPage + 1)}
+            disabled={currentPage === totalPages}
+            className="bg-orange-600 text-white py-2 px-4 rounded-md hover:bg-orange-700 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Next
+          </button>
+        </div>
+      )}
+
+      {/* Image Dialog */}
+      {showDialog && selectedImage && (
+        <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
+          <div className="relative max-w-4xl max-h-[90vh] bg-white rounded-lg overflow-hidden">
+            {/* Close Button */}
+            <button
+              onClick={closeImageDialog}
+              className="absolute top-4 right-4 z-10 bg-white bg-opacity-80 hover:bg-opacity-100 text-gray-800 p-2 rounded-full shadow-lg transition-all duration-200"
+            >
+              <X className="h-6 w-6" />
+            </button>
+
+            {/* Image */}
+            <div className="relative">
+              <img
+                src={selectedImage.url}
+                alt={selectedImage.name}
+                className="w-full h-auto max-h-[80vh] object-contain"
+              />
+            </div>
+
+            {/* Image Info */}
+            <div className="p-6 bg-gray-50">
+              <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                {selectedImage.name}
+              </h3>
+              <div className="flex flex-wrap gap-4 text-sm text-gray-600">
+                <span>Size: {selectedImage.formattedSize}</span>
+                <span>Type: {selectedImage.type}</span>
+                <span>Uploaded: {new Date(selectedImage.created_at).toLocaleDateString()}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
