@@ -328,8 +328,6 @@ const App = () => {
         />
       )}
 
-
-
       {isOpenCalendarModal && (
         <ImageDialog
           setIsOpenModal={setIsOpenCalendarModal}
