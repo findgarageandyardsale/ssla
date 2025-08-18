@@ -12,9 +12,7 @@ export const GalleryPage = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [showDialog, setShowDialog] = useState(false);
 
-  useEffect(() => {
-    fetchImages();
-  }, []);
+
 
   const fetchImages = async () => {
     setLoading(true);
@@ -34,6 +32,10 @@ export const GalleryPage = () => {
     }
   };
 
+  useEffect(() => {
+    fetchImages();
+  }, []);
+  
   const openImageDialog = (image) => {
     setSelectedImage(image);
     setShowDialog(true);
