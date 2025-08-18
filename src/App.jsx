@@ -228,6 +228,7 @@ const App = () => {
         </Layout>
       ),
     },
+    
     {
       path: "/courses-offered",
       element: (
@@ -327,7 +328,7 @@ const App = () => {
           title={"ssla_flyer"}
         />
       )}
-      
+
 
       {isOpenCalendarModal && (
         <ImageDialog
