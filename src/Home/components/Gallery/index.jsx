@@ -1,49 +1,32 @@
 import { useState, useEffect } from "react";
 import { ScrollToTopLink } from "../../../components/common/ScrollToTopLink";
-// import { getGalleryImages } from "../../../services/cloudinaryService";
+import { supabaseStorageService } from "../../../services/supabaseStorageService";
 import { RefreshCw } from "lucide-react";
 
-// Fallback images if Cloudinary is not available
-import image_1 from "../../../assets/gallery/1.jpeg";
-import image_2 from "../../../assets/gallery/2.jpeg";
-import image_3 from "../../../assets/gallery/3.jpeg";
-import image_4 from "../../../assets/gallery/4.jpeg";
-import image_5 from "../../../assets/gallery/5.jpeg";
-import image_6 from "../../../assets/gallery/6.jpeg";
-
-const fallback_images = [
-  { id: 1, image: image_1 },
-  { id: 2, image: image_2 },
-  { id: 3, image: image_3 },
-  { id: 4, image: image_4 },
-  { id: 5, image: image_5 },
-  { id: 6, image: image_6 },
-];
-
 export const Gallery = () => {
-  const [galleryImages, setGalleryImages] = useState(fallback_images);
-  const [loading, setLoading] = useState(false);
+  const [galleryImages, setGalleryImages] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // useEffect(() => {
-  //   const fetchImages = async () => {
-  //     setLoading(true);
-  //     try {
-  //       const result = await getGalleryImages();
-  //       if (result.success && result.images.length > 0) {
-  //         // Take only the first 6 images for the home page gallery
-  //         setGalleryImages(result.images.slice(0, 6));
-  //       }
-  //     } catch (error) {
-  //       console.error('Failed to fetch gallery images:', error);
-  //       // Keep fallback images if fetch fails
-  //       }
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
+  useEffect(() => {
+    const fetchImages = async () => {
+      setLoading(true);
+      setGalleryImages([]); // Clear previous images
+      try {
+        const result = await supabaseStorageService.getGalleryImages();
+        if (result.success && result.images.length > 0) {
+          // Take only the first 10 images for the home page gallery
+          setGalleryImages(result.images.slice(0, 10));
+        }
+      } catch (error) {
+        console.error('Failed to fetch gallery images:', error);
+        // Keep empty array if fetch fails
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  //   fetchImages();
-  // }, []);
+    fetchImages();
+  }, []);
 
   return (
     <div className="bg-[#FF976317] py-5 md:px-16">
@@ -57,6 +40,10 @@ export const Gallery = () => {
           <div className="col-span-full flex justify-center items-center py-8">
             <RefreshCw className="h-8 w-8 text-orange-600 animate-spin" />
           </div>
+        ) : galleryImages.length === 0 ? (
+          <div className="col-span-full text-center py-8 text-gray-500">
+            No images found in gallery
+          </div>
         ) : (
           galleryImages.map((image) => (
             <div
@@ -64,9 +51,9 @@ export const Gallery = () => {
               className="flex flex-col items-center justify-center"
             >
               <img
-                src={image.image}
-                alt={`Gallery image ${image.id}`}
-                className="w-full h-auto object-cover rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
+                src={image.url}
+                alt={image.name}
+                className="w-full h-48 object-cover rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
               />
             </div>
           ))
