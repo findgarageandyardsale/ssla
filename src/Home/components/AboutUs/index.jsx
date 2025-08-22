@@ -1,5 +1,5 @@
 import React from 'react';
-import about_us from "../../../assets/about_us.png";
+import about_us from "../../../assets/about_us.jpg";
 import about_us_bg from "../../../assets/about_us_bg.png";
 import { useNavigate } from 'react-router-dom';
 import { ScrollToTopLink } from '../../../components/common/ScrollToTopLink';
@@ -16,7 +16,7 @@ export const AboutUs = ({ fromAboutUsPage = false }) => {
                     <div className="flex flex-col lg:flex-row items-center justify-center gap-6 sm:gap-8 md:gap-10 lg:gap-12 xl:gap-16 h-full">
                         {/* Left Image */}
                         <div className="flex justify-center w-full lg:w-1/2 order-1 lg:order-1">
-                            <div className="relative w-full max-w-[280px] sm:max-w-[320px] md:max-w-[380px] lg:max-w-[420px] xl:max-w-[480px]">
+                            <div className="relative w-full max-w-[380px] sm:max-w-[420px] md:max-w-[580px] lg:max-w-[620px] xl:max-w-[680px]">
                                 <img
                                     src={about_us}
                                     alt="About us illustration"
