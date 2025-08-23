@@ -6,6 +6,7 @@ import TermsAndConditions from "./TermsAndConditions/TermsAndConditions";
 import { AboutUsPage } from "./pages/AboutUsPage";
 import { ContactUsPage } from "./pages/ContactUsPage";
 import { GalleryPage } from "./pages/GalleryPage";
+import { Grad2025Page } from "./pages/Grad2025Page";
 import { TestimonialsPage } from "./pages/TestimonialsPage";
 import Layout from "./components/Layout";
 import { StaffPage } from "./pages/StaffPage";
@@ -95,6 +96,19 @@ const App = () => {
           setIsOpenCalendarModal={setIsOpenCalendarModal}
         >
           <GalleryPage />
+        </Layout>
+      ),
+    },
+    {
+      path: "/grad2025",
+      element: (
+        <Layout
+          isOpenModal={isOpenModal}
+          setIsOpenModal={setIsOpenModal}
+          isOpenCalendarModal={isOpenCalendarModal}
+          setIsOpenCalendarModal={setIsOpenCalendarModal}
+        >
+          <Grad2025Page />
         </Layout>
       ),
     },
@@ -228,7 +242,7 @@ const App = () => {
         </Layout>
       ),
     },
-    
+
     {
       path: "/courses-offered",
       element: (

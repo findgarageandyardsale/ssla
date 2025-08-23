@@ -177,15 +177,6 @@ export function Contact() {
                   </div>
                 </div>
 
-                {/* Email */}
-                <div className="flex items-center space-x-3 sm:space-x-4">
-                  <div className="flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 bg-orange-500 rounded-full flex items-center justify-center">
-                    <Mail className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
-                  </div>
-                  <p className="text-sm sm:text-base md:text-lg text-gray-700">
-                    cksssla1997@gmail.com
-                  </p>
-                </div>
 
                 {/* Social Media Icons */}
                 <div className="flex space-x-3 sm:space-x-4">
