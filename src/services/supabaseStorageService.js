@@ -14,7 +14,7 @@ export const supabaseStorageService = {
                 .list('', {
                     limit: 100,
                     offset: 0,
-                    sortBy: { column: 'created_at', order: 'desc' }
+                    sortBy: { column: 'created_at', order: 'asc' }
                 })
 
             if (error) {
@@ -124,7 +124,7 @@ export const supabaseStorageService = {
                 .list(folderName, {
                     limit: 100,
                     offset: 0,
-                    sortBy: { column: 'created_at', order: 'desc' }
+                    sortBy: { column: 'created_at', order: 'asc' }
                 })
 
             if (error) {
