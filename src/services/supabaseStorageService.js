@@ -12,7 +12,7 @@ export const supabaseStorageService = {
             const { data, error } = await supabase.storage
                 .from(BUCKET_NAME)
                 .list('', {
-                    limit: 100,
+                    limit: 500,
                     offset: 0,
                     sortBy: { column: 'created_at', order: 'asc' }
                 })
@@ -75,7 +75,7 @@ export const supabaseStorageService = {
             const { data, error } = await supabase.storage
                 .from(BUCKET_NAME)
                 .list('', {
-                    limit: 100,
+                    limit: 500,
                     offset: 0
                 })
 
@@ -122,7 +122,7 @@ export const supabaseStorageService = {
             const { data, error } = await supabase.storage
                 .from(BUCKET_NAME)
                 .list(folderName, {
-                    limit: 100,
+                    limit: 500,
                     offset: 0,
                     sortBy: { column: 'created_at', order: 'asc' }
                 })
