@@ -1,5 +1,5 @@
 import "./App.css";
-import { createHashRouter, RouterProvider } from "react-router-dom";
+import { createHashRouter, RouterProvider, Navigate } from "react-router-dom";
 import { Home } from "./Home";
 import PrivacyPolicy from "./PrivacyPolicy/PrivacyPolicy";
 import TermsAndConditions from "./TermsAndConditions/TermsAndConditions";
@@ -28,6 +28,12 @@ import { ImageDialog } from "./components/ImageFlyer/ImageDialog";
 import ssla_flyer from "./assets/ssla_flyer.jpeg";
 import CalendarPage from "./pages/CalendarPage";
 import calendar from "./assets/calendar.jpeg";
+import { AttendanceLoginPage } from "./pages/AttendanceLoginPage";
+import { ProtectedAttendanceWrapper } from "./pages/AttendanceDashboard/ProtectedAttendanceWrapper";
+import { RoomsView } from "./pages/AttendanceDashboard/RoomsView";
+import { TeachersView } from "./pages/AttendanceDashboard/TeachersView";
+import { StudentsView } from "./pages/AttendanceDashboard/StudentsView";
+import { StudentDetailPage } from "./pages/AttendanceDashboard/StudentDetailPage";
 
 const App = () => {
   const [isOpenModal, setIsOpenModal] = useState(false);
@@ -308,6 +314,42 @@ const App = () => {
           <CalendarPage />
         </Layout>
       ),
+    },
+    {
+      path: "/attendance/login",
+      element: (
+        <Layout
+          isOpenModal={isOpenModal}
+          setIsOpenModal={setIsOpenModal}
+          isOpenCalendarModal={isOpenCalendarModal}
+          setIsOpenCalendarModal={setIsOpenCalendarModal}
+        >
+          <AttendanceLoginPage />
+        </Layout>
+      ),
+    },
+    {
+      path: "/attendance",
+      element: (
+        <Layout
+          isOpenModal={isOpenModal}
+          setIsOpenModal={setIsOpenModal}
+          isOpenCalendarModal={isOpenCalendarModal}
+          setIsOpenCalendarModal={setIsOpenCalendarModal}
+        >
+          <ProtectedAttendanceWrapper />
+        </Layout>
+      ),
+      children: [
+        {
+          index: true,
+          element: <Navigate to="/attendance/rooms" replace />,
+        },
+        { path: "rooms", element: <RoomsView /> },
+        { path: "teachers", element: <TeachersView /> },
+        { path: "students", element: <StudentsView /> },
+        { path: "students/:studentId", element: <StudentDetailPage /> },
+      ],
     },
     {
       path: "*",
