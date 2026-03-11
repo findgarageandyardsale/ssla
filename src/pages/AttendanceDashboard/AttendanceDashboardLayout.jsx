@@ -4,6 +4,7 @@ const navItems = [
   { to: "/attendance/rooms", label: "Rooms" },
   { to: "/attendance/teachers", label: "Teachers" },
   { to: "/attendance/students", label: "Students" },
+  { to: "/attendance/attendance", label: "Attendance" },
 ];
 
 export const AttendanceDashboardLayout = () => {

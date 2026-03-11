@@ -1,9 +1,10 @@
 import { useState, useMemo, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Plus, Pencil, Trash2, X, ChevronLeft, ChevronRight, Eye } from "lucide-react";
+import { Plus, Pencil, Trash2, X, ChevronLeft, ChevronRight, Eye, FileDown } from "lucide-react";
 import { InputField, SelectField } from "../../components/atoms";
 import { initialStudents, initialRooms } from "../../data/attendanceDummyData";
+import { exportStudentsToPdf, exportStudentsToCsv } from "../../utils/studentExport";
 
 const PAGE_SIZES = [10, 20, 50];
 const generateId = () => `s${Date.now()}`;
@@ -163,16 +164,35 @@ export const StudentsView = () => {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
         <h2 className="text-lg font-semibold text-brand-text-color">Students</h2>
-        <button
-          type="button"
-          onClick={openAdd}
-          className="inline-flex items-center gap-2 bg-[#E84B23] text-white px-4 py-2 rounded-lg hover:bg-[#d13d1a] transition-colors font-medium"
-        >
-          <Plus className="w-4 h-4" />
-          Add Student
-        </button>
+        <div className="flex items-center gap-2">
+          <span className="text-sm text-gray-600 hidden sm:inline">Export (filtered):</span>
+          <button
+            type="button"
+            onClick={() => exportStudentsToPdf(filteredStudents, initialRooms)}
+            className="inline-flex items-center gap-2 border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors font-medium text-sm"
+          >
+            <FileDown className="w-4 h-4" />
+            PDF
+          </button>
+          <button
+            type="button"
+            onClick={() => exportStudentsToCsv(filteredStudents, initialRooms)}
+            className="inline-flex items-center gap-2 border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors font-medium text-sm"
+          >
+            <FileDown className="w-4 h-4" />
+            Excel
+          </button>
+          <button
+            type="button"
+            onClick={openAdd}
+            className="inline-flex items-center gap-2 bg-[#E84B23] text-white px-4 py-2 rounded-lg hover:bg-[#d13d1a] transition-colors font-medium"
+          >
+            <Plus className="w-4 h-4" />
+            Add Student
+          </button>
+        </div>
       </div>
 
       {/* Filters */}

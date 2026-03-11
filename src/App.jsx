@@ -34,6 +34,7 @@ import { RoomsView } from "./pages/AttendanceDashboard/RoomsView";
 import { TeachersView } from "./pages/AttendanceDashboard/TeachersView";
 import { StudentsView } from "./pages/AttendanceDashboard/StudentsView";
 import { StudentDetailPage } from "./pages/AttendanceDashboard/StudentDetailPage";
+import { AttendanceView } from "./pages/AttendanceDashboard/AttendanceView";
 
 const App = () => {
   const [isOpenModal, setIsOpenModal] = useState(false);
@@ -349,6 +350,7 @@ const App = () => {
         { path: "teachers", element: <TeachersView /> },
         { path: "students", element: <StudentsView /> },
         { path: "students/:studentId", element: <StudentDetailPage /> },
+        { path: "attendance", element: <AttendanceView /> },
       ],
     },
     {

@@ -78,3 +78,32 @@ for (let i = 1; i <= 100; i++) {
 }
 
 export const initialStudents = studentList;
+
+// Dummy attendance records: { studentId, date (YYYY-MM-DD), status: 'present' | 'absent' }
+// Generate for last 7 days; some students have 4+ consecutive absences for "inactive" section
+function getDateStr(daysAgo) {
+  const d = new Date();
+  d.setDate(d.getDate() - daysAgo);
+  return d.toISOString().slice(0, 10);
+}
+
+const attendanceRecords = [];
+for (let daysAgo = 0; daysAgo < 7; daysAgo++) {
+  const date = getDateStr(daysAgo);
+  for (let i = 1; i <= 100; i++) {
+    const studentId = `s${i}`;
+    // ~70% present most days; students 80-95 have 4+ consecutive absences (inactive)
+    const isInactivePool = i >= 80 && i <= 95;
+    let status;
+    if (isInactivePool && daysAgo < 5) {
+      status = "absent";
+    } else if (isInactivePool && daysAgo >= 5) {
+      status = Math.random() > 0.3 ? "absent" : "present";
+    } else {
+      status = Math.random() > 0.25 ? "present" : "absent";
+    }
+    attendanceRecords.push({ studentId, date, status });
+  }
+}
+
+export const initialAttendanceRecords = attendanceRecords;
