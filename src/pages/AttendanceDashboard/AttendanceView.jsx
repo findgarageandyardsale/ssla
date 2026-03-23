@@ -1,5 +1,6 @@
-import { useState, useMemo } from "react";
-import { initialStudents, initialRooms, initialAttendanceRecords } from "../../data/attendanceDummyData";
+import { useState, useMemo, useEffect } from "react";
+import { getStudentDisplayName } from "../../utils/studentDisplayName";
+import { fetchRooms, fetchStudents, fetchAttendanceRecords } from "../../services/attendanceFirestoreService";
 
 const CONSECUTIVE_DAYS_INACTIVE = 4;
 const MAX_DAYS_IN_RANGE = 31;
@@ -33,16 +34,50 @@ export const AttendanceView = () => {
   const [toDate, setToDate] = useState(today);
   const [roomFilter, setRoomFilter] = useState("");
   const [searchText, setSearchText] = useState("");
-  const [viewMode, setViewMode] = useState(VIEW_MODE_ALL); // 'all' | 'active' | 'inactive'
+  const [viewMode, setViewMode] = useState(VIEW_MODE_ALL);
+
+  const [students, setStudents] = useState([]);
+  const [rooms, setRooms] = useState([]);
+  const [attendanceRecords, setAttendanceRecords] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [recordsLoading, setRecordsLoading] = useState(true);
+  const [loadError, setLoadError] = useState(null);
+  const [recordsError, setRecordsError] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      setLoading(true);
+      setLoadError(null);
+      const [roomsRes, studentsRes] = await Promise.all([fetchRooms(), fetchStudents()]);
+      if (roomsRes.success) setRooms(roomsRes.data);
+      if (studentsRes.success) setStudents(studentsRes.data);
+      let err = null;
+      if (!roomsRes.success && roomsRes.error) err = roomsRes.error;
+      if (!studentsRes.success && studentsRes.error) err = err || studentsRes.error;
+      setLoadError(err);
+      setLoading(false);
+    })();
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      setRecordsLoading(true);
+      setRecordsError(null);
+      const res = await fetchAttendanceRecords(fromDate, toDate);
+      if (res.success) setAttendanceRecords(res.data);
+      else setRecordsError(res.error || "Could not load attendance");
+      setRecordsLoading(false);
+    })();
+  }, [fromDate, toDate]);
 
   const recordsByStudentAndDate = useMemo(() => {
     const map = {};
-    initialAttendanceRecords.forEach((r) => {
+    attendanceRecords.forEach((r) => {
       if (!map[r.studentId]) map[r.studentId] = {};
       map[r.studentId][r.date] = r.status;
     });
     return map;
-  }, []);
+  }, [attendanceRecords]);
 
   const datesInRange = useMemo(
     () => getDatesInRange(fromDate, toDate),
@@ -50,20 +85,25 @@ export const AttendanceView = () => {
   );
 
   const filteredStudents = useMemo(() => {
-    let list = [...initialStudents];
+    let list = [...students];
     const search = searchText.trim().toLowerCase();
     if (search) {
-      list = list.filter(
-        (s) =>
-          s.name.toLowerCase().includes(search) ||
-          (s.number && s.number.toLowerCase().includes(search))
-      );
+      list = list.filter((s) => {
+        const name = getStudentDisplayName(s).toLowerCase();
+        const id = (s.id || "").toLowerCase();
+        return (
+          name.includes(search) ||
+          id.includes(search) ||
+          (s.firstName && s.firstName.toLowerCase().includes(search)) ||
+          (s.lastName && s.lastName.toLowerCase().includes(search))
+        );
+      });
     }
     if (roomFilter) {
       list = list.filter((s) => s.roomIds && s.roomIds.includes(roomFilter));
     }
     return list;
-  }, [searchText, roomFilter]);
+  }, [students, searchText, roomFilter]);
 
   const getStatusForDate = (studentId, date) => {
     return recordsByStudentAndDate[studentId]?.[date] ?? null;
@@ -78,7 +118,7 @@ export const AttendanceView = () => {
       d.setDate(d.getDate() - i);
       dates.push(d.toISOString().slice(0, 10));
     }
-    initialStudents.forEach((s) => {
+    students.forEach((s) => {
       const allAbsentOrMissing = dates.every((date) => {
         const status = recordsByStudentAndDate[s.id]?.[date];
         return status !== "present";
@@ -86,12 +126,7 @@ export const AttendanceView = () => {
       if (allAbsentOrMissing) inactive.push(s.id);
     });
     return inactive;
-  }, [toDate, recordsByStudentAndDate]);
-
-  const inactiveStudents = useMemo(
-    () => initialStudents.filter((s) => inactiveStudentIds.includes(s.id)),
-    [inactiveStudentIds]
-  );
+  }, [toDate, recordsByStudentAndDate, students]);
 
   const activeFilteredStudents = useMemo(
     () => filteredStudents.filter((s) => !inactiveStudentIds.includes(s.id)),
@@ -112,12 +147,12 @@ export const AttendanceView = () => {
   const getRoomNames = (roomIds) => {
     if (!roomIds?.length) return "—";
     return roomIds
-      .map((id) => initialRooms.find((r) => r.id === id)?.name)
+      .map((id) => rooms.find((r) => r.id === id)?.name)
       .filter(Boolean)
       .join(", ") || "—";
   };
 
-  const roomOptions = initialRooms.map((r) => ({ value: r.id, label: r.name }));
+  const roomOptions = rooms.map((r) => ({ value: r.id, label: r.name }));
 
   const statusBadge = (status) => {
     if (status === "present") return { label: "P", className: "bg-brand-success/15 text-brand-success" };
@@ -136,6 +171,15 @@ export const AttendanceView = () => {
 
       {/* Filters */}
       <div className="p-4 bg-gray-50 rounded-xl border border-gray-200 space-y-3">
+        {(loading || recordsLoading) && (
+          <p className="text-sm text-gray-600">Loading…</p>
+        )}
+        {loadError && (
+          <p className="text-sm text-red-600">Students/rooms: {loadError}</p>
+        )}
+        {recordsError && (
+          <p className="text-sm text-red-600">Attendance records: {recordsError}</p>
+        )}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
           <div>
             <label className="block text-xs font-semibold text-gray-600 mb-1">From date</label>
@@ -174,7 +218,7 @@ export const AttendanceView = () => {
               type="text"
               value={searchText}
               onChange={(e) => setSearchText(e.target.value)}
-              placeholder="Student name or number..."
+              placeholder="Name or student id…"
               className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-[#E84B23]/30 focus:border-[#E84B23]"
             />
           </div>
@@ -245,7 +289,6 @@ export const AttendanceView = () => {
             <thead className="bg-gray-50">
               <tr>
                 <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider sticky left-0 bg-gray-50 z-10">Name</th>
-                <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider sticky left-[var(--tw)] bg-gray-50">Number</th>
                 <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Class</th>
                 {datesInRange.map((date) => (
                   <th key={date} className="px-2 py-3 text-center text-xs font-semibold text-gray-600 whitespace-nowrap" title={date}>
@@ -257,8 +300,7 @@ export const AttendanceView = () => {
             <tbody className="bg-white divide-y divide-gray-200">
               {studentsToShowInTable.map((student) => (
                 <tr key={student.id} className="hover:bg-gray-50/50">
-                  <td className="px-4 py-3 text-sm font-medium text-brand-text-color whitespace-nowrap sticky left-0 bg-white z-10">{student.name}</td>
-                  <td className="px-4 py-3 text-sm text-brand-light-text-color whitespace-nowrap">{student.number}</td>
+                  <td className="px-4 py-3 text-sm font-medium text-brand-text-color whitespace-nowrap sticky left-0 bg-white z-10">{getStudentDisplayName(student)}</td>
                   <td className="px-4 py-3 text-sm text-brand-light-text-color whitespace-nowrap">{getRoomNames(student.roomIds)}</td>
                   {datesInRange.map((date) => {
                     const status = getStatusForDate(student.id, date);
@@ -303,18 +345,18 @@ export const AttendanceView = () => {
               <thead className="bg-gray-50">
                 <tr>
                   <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Name</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Number</th>
                   <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Class</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Parent</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Father / Mother</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Contact</th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {inactiveFilteredStudents.map((student) => (
                   <tr key={student.id} className="hover:bg-gray-50/50">
-                    <td className="px-4 py-3 text-sm font-medium text-brand-text-color">{student.name}</td>
-                    <td className="px-4 py-3 text-sm text-brand-light-text-color">{student.number}</td>
+                    <td className="px-4 py-3 text-sm font-medium text-brand-text-color">{getStudentDisplayName(student)}</td>
                     <td className="px-4 py-3 text-sm text-brand-light-text-color">{getRoomNames(student.roomIds)}</td>
-                    <td className="px-4 py-3 text-sm text-brand-light-text-color">{student.parentName || "—"} {student.parentPhone && ` · ${student.parentPhone}`}</td>
+                    <td className="px-4 py-3 text-sm text-brand-light-text-color">{[student.fathersName, student.mothersName].filter(Boolean).join(" / ") || "—"}</td>
+                    <td className="px-4 py-3 text-sm text-brand-light-text-color">{[student.homePhone, student.cell1, student.cell2].filter(Boolean).join(" · ") || "—"}</td>
                   </tr>
                 ))}
               </tbody>

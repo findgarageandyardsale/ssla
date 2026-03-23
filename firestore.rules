@@ -1,0 +1,29 @@
+rules_version = '2';
+
+// Paste into Firebase Console → Firestore → Rules → Publish
+// Or: npm i -g firebase-tools && firebase login && firebase deploy --only firestore:rules
+//
+// Attendance data: signed-in Firebase Auth users only (Email/Password, etc.).
+// Terminal scripts (seed/import) need the Firebase Admin SDK or temporarily relax rules.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    match /attendance_rooms/{docId} {
+      allow read, write: if request.auth != null;
+    }
+    match /attendance_teachers/{docId} {
+      allow read, write: if request.auth != null;
+    }
+    match /attendance_students/{docId} {
+      allow read, write: if request.auth != null;
+    }
+    match /attendance_records/{docId} {
+      allow read, write: if request.auth != null;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -17,6 +17,8 @@ dist-ssr
 !.vscode/extensions.json
 .idea
 .env
+# Student spreadsheets (PII)
+data/*.xlsx
 .DS_Store
 *.suo
 *.ntvs*

@@ -1,18 +1,38 @@
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { Plus, Pencil, Trash2, X } from "lucide-react";
 import { InputField, TextAreaField, SelectField } from "../../components/atoms";
-import { initialTeachers, initialRooms } from "../../data/attendanceDummyData";
+import { fetchRooms, fetchTeachers, setTeacher, deleteTeacher } from "../../services/attendanceFirestoreService";
 
 const generateId = () => `t${Date.now()}`;
 
-const roomOptions = initialRooms.map((r) => ({ value: r.id, label: r.name }));
-
 export const TeachersView = () => {
-  const [teachers, setTeachers] = useState(initialTeachers);
+  const [rooms, setRooms] = useState([]);
+  const [teachers, setTeachers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [editingTeacher, setEditingTeacher] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
+
+  const roomOptions = useMemo(() => rooms.map((r) => ({ value: r.id, label: r.name })), [rooms]);
+
+  const load = async () => {
+    setLoading(true);
+    setError(null);
+    const [roomsRes, teachersRes] = await Promise.all([fetchRooms(), fetchTeachers()]);
+    if (roomsRes.success) setRooms(roomsRes.data);
+    if (teachersRes.success) setTeachers(teachersRes.data);
+    let err = null;
+    if (!roomsRes.success && roomsRes.error) err = roomsRes.error;
+    if (!teachersRes.success && teachersRes.error) err = err || teachersRes.error;
+    setError(err);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    load();
+  }, []);
 
   const {
     register,
@@ -27,9 +47,8 @@ export const TeachersView = () => {
     reset({
       name: "",
       information: "",
-      emails: "",
+      email: "",
       roomId: "",
-      username: "",
       password: "",
     });
     setModalOpen(true);
@@ -41,9 +60,8 @@ export const TeachersView = () => {
     reset({
       name: teacher.name,
       information: teacher.information || "",
-      emails: teacher.emails,
+      email: teacher.email || "",
       roomId: teacher.roomId || "",
-      username: teacher.username || "",
       password: teacher.password || "",
     });
     setModalOpen(true);
@@ -60,41 +78,39 @@ export const TeachersView = () => {
     if (file) setImagePreview(URL.createObjectURL(file));
   };
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     const payload = {
       name: data.name,
       information: data.information || "",
-      emails: data.emails,
+      email: data.email,
       roomId: data.roomId || null,
-      username: data.username || "",
       password: data.password || "",
       image: imagePreview || editingTeacher?.image || null,
     };
     if (editingTeacher) {
-      setTeachers((prev) =>
-        prev.map((t) =>
-          t.id === editingTeacher.id ? { ...editingTeacher, ...payload } : t
-        )
-      );
+      const res = await setTeacher(editingTeacher.id, payload);
+      if (res.success) {
+        setTeachers((prev) => prev.map((t) => (t.id === editingTeacher.id ? { ...editingTeacher, ...payload } : t)));
+        closeModal();
+      } else setError(res.error);
     } else {
-      setTeachers((prev) => [
-        ...prev,
-        {
-          id: generateId(),
-          ...payload,
-        },
-      ]);
+      const id = generateId();
+      const res = await setTeacher(id, payload);
+      if (res.success) {
+        setTeachers((prev) => [...prev, { id, ...payload }]);
+        closeModal();
+      } else setError(res.error);
     }
-    closeModal();
   };
 
-  const onDelete = (teacher) => {
+  const onDelete = async (teacher) => {
     if (!window.confirm(`Delete teacher "${teacher.name}"?`)) return;
-    setTeachers((prev) => prev.filter((t) => t.id !== teacher.id));
+    const res = await deleteTeacher(teacher.id);
+    if (res.success) setTeachers((prev) => prev.filter((t) => t.id !== teacher.id));
+    else setError(res.error);
   };
 
-  const getRoomName = (roomId) =>
-    initialRooms.find((r) => r.id === roomId)?.name ?? "—";
+  const getRoomName = (roomId) => rooms.find((r) => r.id === roomId)?.name ?? "—";
 
   return (
     <div>
@@ -109,7 +125,12 @@ export const TeachersView = () => {
           Add Teacher
         </button>
       </div>
-
+      {error && (
+        <div className="mb-4 p-3 rounded-lg bg-red-50 text-red-700 text-sm">{error}</div>
+      )}
+      {loading ? (
+        <div className="py-8 text-center text-brand-light-text-color">Loading...</div>
+      ) : (
       <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
@@ -118,7 +139,7 @@ export const TeachersView = () => {
                 Name
               </th>
               <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                Email(s)
+                Email
               </th>
               <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
                 Room
@@ -132,13 +153,20 @@ export const TeachersView = () => {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
+            {teachers.length === 0 && (
+              <tr>
+                <td colSpan={5} className="px-4 py-8 text-center text-sm text-brand-light-text-color">
+                  No teachers yet. Use Add Teacher to create one.
+                </td>
+              </tr>
+            )}
             {teachers.map((teacher) => (
               <tr key={teacher.id} className="hover:bg-gray-50/50">
                 <td className="px-4 py-3 text-sm font-medium text-brand-text-color">
                   {teacher.name}
                 </td>
                 <td className="px-4 py-3 text-sm text-brand-light-text-color">
-                  {teacher.emails || "—"}
+                  {teacher.email || "—"}
                 </td>
                 <td className="px-4 py-3 text-sm text-brand-light-text-color">
                   {getRoomName(teacher.roomId)}
@@ -179,6 +207,7 @@ export const TeachersView = () => {
           </tbody>
         </table>
       </div>
+      )}
 
       {modalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 overflow-y-auto">
@@ -211,11 +240,12 @@ export const TeachersView = () => {
                 {...register("information")}
               />
               <InputField
-                label="Emails"
+                label="Email (for login)"
+                type="email"
                 required
-                placeholder="email@example.com or comma-separated"
-                error={errors.emails}
-                {...register("emails", { required: "Emails are required" })}
+                placeholder="teacher@school.com"
+                error={errors.email}
+                {...register("email", { required: "Email is required for teacher login" })}
               />
               <SelectField
                 label="Room"
@@ -243,15 +273,12 @@ export const TeachersView = () => {
                 )}
               </div>
               <InputField
-                label="Username (for app login)"
-                placeholder="Username"
-                {...register("username")}
-              />
-              <InputField
-                label="Password (for app login)"
+                label="Password (for login)"
                 type="password"
+                required
                 placeholder="••••••••"
-                {...register("password")}
+                error={errors.password}
+                {...register("password", { required: "Password is required for teacher login" })}
               />
               <div className="flex gap-3 pt-2">
                 <button

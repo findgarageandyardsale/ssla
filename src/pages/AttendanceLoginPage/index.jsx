@@ -1,24 +1,45 @@
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { InputField } from "../../components/atoms";
-import { useState } from "react";
-
-const ATTENDANCE_AUTH_KEY = "attendance_super_admin";
+import {
+  attendanceSignIn,
+  mapAttendanceAuthError,
+  subscribeAttendanceAuth,
+} from "../../services/attendanceAuthService";
 
 export const AttendanceLoginPage = () => {
   const navigate = useNavigate();
   const [submitError, setSubmitError] = useState("");
+  const [busy, setBusy] = useState(false);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const onSubmit = () => {
+  useEffect(() => {
+    return subscribeAttendanceAuth((user) => {
+      if (user) navigate("/attendance", { replace: true });
+    });
+  }, [navigate]);
+
+  const onSubmit = async (data) => {
     setSubmitError("");
-    // Mock auth: any non-empty email/password is accepted
-    localStorage.setItem(ATTENDANCE_AUTH_KEY, "true");
-    navigate("/attendance", { replace: true });
+    setBusy(true);
+    try {
+      await attendanceSignIn(data.email, data.password);
+      navigate("/attendance", { replace: true });
+    } catch (e) {
+      const code = e?.code || "";
+      if (code === "app/no-firebase") {
+        setSubmitError(e.message);
+      } else {
+        setSubmitError(mapAttendanceAuthError(code));
+      }
+    } finally {
+      setBusy(false);
+    }
   };
 
   return (
@@ -28,14 +49,15 @@ export const AttendanceLoginPage = () => {
           Attendance Dashboard
         </h1>
         <p className="text-brand-light-text-color text-sm mb-6">
-          Super admin login (mock – any credentials work)
+          Sign in with the email and password from Firebase Authentication.
         </p>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <InputField
             label="Email"
             type="email"
             required
-            placeholder="admin@school.com"
+            placeholder="you@example.com"
+            autoComplete="email"
             error={errors.email}
             {...register("email", { required: "Email is required" })}
           />
@@ -44,6 +66,7 @@ export const AttendanceLoginPage = () => {
             type="password"
             required
             placeholder="••••••••"
+            autoComplete="current-password"
             error={errors.password}
             {...register("password", { required: "Password is required" })}
           />
@@ -52,9 +75,10 @@ export const AttendanceLoginPage = () => {
           )}
           <button
             type="submit"
-            className="w-full bg-[#E84B23] text-white px-6 py-3 rounded-lg hover:bg-[#d13d1a] transition-colors duration-200 font-semibold"
+            disabled={busy}
+            className="w-full bg-[#E84B23] text-white px-6 py-3 rounded-lg hover:bg-[#d13d1a] transition-colors duration-200 font-semibold disabled:opacity-60"
           >
-            Log in
+            {busy ? "Signing in…" : "Log in"}
           </button>
         </form>
       </div>

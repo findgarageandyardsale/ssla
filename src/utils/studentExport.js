@@ -1,23 +1,56 @@
 import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
+import { getStudentDisplayName } from "./studentDisplayName";
 
-/**
- * Get room names string for a student's roomIds
- */
 function getRoomNames(roomIds, rooms) {
   if (!roomIds?.length) return "—";
-  return roomIds
-    .map((id) => rooms.find((r) => r.id === id)?.name)
-    .filter(Boolean)
-    .join(", ") || "—";
+  return (
+    roomIds
+      .map((id) => rooms.find((r) => r.id === id)?.name)
+      .filter(Boolean)
+      .join(", ") || "—"
+  );
 }
 
 /**
- * Export filtered students to PDF
- * @param {Array} students - list of student objects
- * @param {Array} rooms - list of room objects { id, name }
+ * All exportable columns (order = default column order in PDF/CSV).
+ * `getValue(student, rooms)` returns the cell string.
  */
-export function exportStudentsToPdf(students, rooms) {
+export const STUDENT_EXPORT_COLUMNS = [
+  { id: "studentId", label: "Student ID", getValue: (s) => s.id || "" },
+  { id: "name", label: "Full name", getValue: (s) => getStudentDisplayName(s) },
+  { id: "firstName", label: "First name", getValue: (s) => s.firstName || "" },
+  { id: "middleName", label: "Middle name", getValue: (s) => s.middleName || "" },
+  { id: "lastName", label: "Last name", getValue: (s) => s.lastName || "" },
+  { id: "dateOfBirth", label: "DOB", getValue: (s) => s.dateOfBirth || "" },
+  { id: "email", label: "Email", getValue: (s) => s.email || "" },
+  { id: "fathersName", label: "Father's name", getValue: (s) => s.fathersName || "" },
+  { id: "mothersName", label: "Mother's name", getValue: (s) => s.mothersName || "" },
+  { id: "address", label: "Address", getValue: (s) => s.address || "" },
+  { id: "city", label: "City", getValue: (s) => s.city || "" },
+  { id: "state", label: "State", getValue: (s) => s.state || "" },
+  { id: "zip", label: "ZIP", getValue: (s) => s.zip || "" },
+  { id: "homePhone", label: "Home phone", getValue: (s) => s.homePhone || "" },
+  { id: "cell1", label: "Cell 1", getValue: (s) => s.cell1 || "" },
+  { id: "cell2", label: "Cell 2", getValue: (s) => s.cell2 || "" },
+  { id: "emergencyPhone", label: "Emergency phone", getValue: (s) => s.emergencyPhone || "" },
+  { id: "rooms", label: "Room(s)", getValue: (s, rooms) => getRoomNames(s.roomIds, rooms) },
+];
+
+export const DEFAULT_STUDENT_EXPORT_COLUMN_IDS = STUDENT_EXPORT_COLUMNS.map((c) => c.id);
+
+/** Resolve selected column defs in canonical order */
+export function getOrderedExportColumns(selectedColumnIds) {
+  const set = new Set(selectedColumnIds);
+  return STUDENT_EXPORT_COLUMNS.filter((c) => set.has(c.id));
+}
+
+export function exportStudentsToPdf(students, rooms, selectedColumnIds) {
+  const cols = getOrderedExportColumns(
+    selectedColumnIds?.length ? selectedColumnIds : DEFAULT_STUDENT_EXPORT_COLUMN_IDS
+  );
+  if (!cols.length) return false;
+
   const doc = new jsPDF({ orientation: "landscape", unit: "mm", format: "a4" });
   const title = "Students List";
   const generatedAt = new Date().toLocaleString();
@@ -28,67 +61,42 @@ export function exportStudentsToPdf(students, rooms) {
   doc.setTextColor(100, 100, 100);
   doc.text(`Generated: ${generatedAt} · ${students.length} student(s)`, 14, 22);
 
-  const headers = ["Name", "Number", "Email", "Parent Name", "Parent Email", "Parent Phone", "Room(s)"];
-  const rows = students.map((s) => [
-    s.name || "",
-    s.number || "",
-    s.email || "",
-    s.parentName || "",
-    s.parentEmail || "",
-    s.parentPhone || "",
-    getRoomNames(s.roomIds, rooms),
-  ]);
+  const headers = cols.map((c) => c.label);
+  const rows = students.map((s) => cols.map((c) => String(c.getValue(s, rooms) ?? "")));
+
+  const fontSize = cols.length > 10 ? 5 : cols.length > 7 ? 6 : 7;
 
   autoTable(doc, {
     head: [headers],
     body: rows,
     startY: 28,
     theme: "grid",
-    headStyles: { fillColor: [232, 75, 35], fontSize: 8 },
-    bodyStyles: { fontSize: 7 },
-    columnStyles: {
-      0: { cellWidth: 35 },
-      1: { cellWidth: 18 },
-      2: { cellWidth: 40 },
-      3: { cellWidth: 35 },
-      4: { cellWidth: 40 },
-      5: { cellWidth: 28 },
-      6: { cellWidth: 35 },
-    },
+    headStyles: { fillColor: [232, 75, 35], fontSize: Math.min(8, fontSize + 1) },
+    bodyStyles: { fontSize },
     margin: { left: 14 },
   });
 
   doc.save(`students-${new Date().toISOString().slice(0, 10)}.pdf`);
+  return true;
 }
 
-/**
- * Escape a cell for CSV (wrap in quotes if contains comma, newline, or quote)
- */
 function escapeCsvCell(value) {
   const s = String(value ?? "");
   if (/[,"\n\r]/.test(s)) return `"${s.replace(/"/g, '""')}"`;
   return s;
 }
 
-/**
- * Export filtered students to CSV (opens in Excel)
- * @param {Array} students - list of student objects
- * @param {Array} rooms - list of room objects { id, name }
- */
-export function exportStudentsToCsv(students, rooms) {
-  const headers = ["Name", "Number", "Email", "Parent Name", "Parent Email", "Parent Phone", "Room(s)"];
+export function exportStudentsToCsv(students, rooms, selectedColumnIds) {
+  const cols = getOrderedExportColumns(
+    selectedColumnIds?.length ? selectedColumnIds : DEFAULT_STUDENT_EXPORT_COLUMN_IDS
+  );
+  if (!cols.length) return false;
+
+  const headers = cols.map((c) => c.label);
   const headerRow = headers.map(escapeCsvCell).join(",");
   const dataRows = students.map((s) =>
-    [
-      s.name,
-      s.number,
-      s.email,
-      s.parentName,
-      s.parentEmail,
-      s.parentPhone,
-      getRoomNames(s.roomIds, rooms),
-    ]
-      .map(escapeCsvCell)
+    cols
+      .map((c) => escapeCsvCell(c.getValue(s, rooms)))
       .join(",")
   );
   const csv = [headerRow, ...dataRows].join("\n");
@@ -99,4 +107,5 @@ export function exportStudentsToCsv(students, rooms) {
   a.download = `students-${new Date().toISOString().slice(0, 10)}.csv`;
   a.click();
   URL.revokeObjectURL(url);
+  return true;
 }

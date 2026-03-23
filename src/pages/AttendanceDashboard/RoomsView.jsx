@@ -1,15 +1,30 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Plus, Pencil, Trash2, X } from "lucide-react";
 import { InputField, TextAreaField } from "../../components/atoms";
-import { initialRooms } from "../../data/attendanceDummyData";
+import { fetchRooms, createRoom, updateRoom, deleteRoom } from "../../services/attendanceFirestoreService";
 
 const generateId = () => `r${Date.now()}`;
 
 export const RoomsView = () => {
-  const [rooms, setRooms] = useState(initialRooms);
+  const [rooms, setRooms] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [editingRoom, setEditingRoom] = useState(null);
+
+  const loadRooms = async () => {
+    setLoading(true);
+    setError(null);
+    const res = await fetchRooms();
+    if (res.success) setRooms(res.data);
+    else setError(res.error || "Could not load rooms");
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    loadRooms();
+  }, []);
 
   const {
     register,
@@ -35,47 +50,60 @@ export const RoomsView = () => {
     setEditingRoom(null);
   };
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     if (editingRoom) {
-      setRooms((prev) =>
-        prev.map((r) =>
-          r.id === editingRoom.id
-            ? { ...r, name: data.name, description: data.description }
-            : r
-        )
-      );
+      const res = await updateRoom(editingRoom.id, { name: data.name, description: data.description });
+      if (res.success) {
+        setRooms((prev) =>
+          prev.map((r) =>
+            r.id === editingRoom.id ? { ...r, name: data.name, description: data.description } : r
+          )
+        );
+        closeModal();
+      } else {
+        setError(res.error);
+      }
     } else {
-      setRooms((prev) => [
-        ...prev,
-        {
-          id: generateId(),
-          name: data.name,
-          description: data.description || "",
-        },
-      ]);
+      const id = generateId();
+      const res = await createRoom(id, { name: data.name, description: data.description });
+      if (res.success) {
+        setRooms((prev) => [...prev, { id, name: data.name, description: data.description || "" }]);
+        closeModal();
+      } else {
+        setError(res.error);
+      }
     }
-    closeModal();
   };
 
-  const onDelete = (room) => {
+  const onDelete = async (room) => {
     if (!window.confirm(`Delete room "${room.name}"?`)) return;
-    setRooms((prev) => prev.filter((r) => r.id !== room.id));
+    const res = await deleteRoom(room.id);
+    if (res.success) setRooms((prev) => prev.filter((r) => r.id !== room.id));
+    else setError(res.error);
   };
 
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-lg font-semibold text-brand-text-color">Rooms</h2>
-        <button
-          type="button"
-          onClick={openAdd}
-          className="inline-flex items-center gap-2 bg-[#E84B23] text-white px-4 py-2 rounded-lg hover:bg-[#d13d1a] transition-colors font-medium"
-        >
-          <Plus className="w-4 h-4" />
-          Add Room
-        </button>
+        <div className="flex flex-wrap gap-2">
+          <button
+            type="button"
+            onClick={openAdd}
+            disabled={loading}
+            className="inline-flex items-center gap-2 bg-[#E84B23] text-white px-4 py-2 rounded-lg hover:bg-[#d13d1a] transition-colors font-medium disabled:opacity-50"
+          >
+            <Plus className="w-4 h-4" />
+            Add Room
+          </button>
+        </div>
       </div>
-
+      {error && (
+        <div className="mb-4 p-3 rounded-lg bg-red-50 text-red-700 text-sm">{error}</div>
+      )}
+      {loading ? (
+        <div className="py-8 text-center text-brand-light-text-color">Loading rooms...</div>
+      ) : (
       <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
@@ -92,6 +120,13 @@ export const RoomsView = () => {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
+            {rooms.length === 0 && (
+              <tr>
+                <td colSpan={3} className="px-4 py-8 text-center text-sm text-brand-light-text-color">
+                  No rooms yet. Add one with the button above.
+                </td>
+              </tr>
+            )}
             {rooms.map((room) => (
               <tr key={room.id} className="hover:bg-gray-50/50">
                 <td className="px-4 py-3 text-sm font-medium text-brand-text-color">
@@ -125,6 +160,7 @@ export const RoomsView = () => {
           </tbody>
         </table>
       </div>
+      )}
 
       {modalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
