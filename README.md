@@ -1,6 +1,10 @@
 # React + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This template provides a minimal setup to get React working with Vite with HMR and some ESLint rules.
+
+## Environment and secrets
+
+Copy `.env.example` to `.env` and add your real keys from Firebase / Supabase consoles. **Do not commit `.env` or put real secrets in `.env.example`.** See [SECURITY.md](SECURITY.md) for key rotation and API key restrictions.
 
 Currently, two official plugins are available:
 

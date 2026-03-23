@@ -7,11 +7,14 @@ import {
   mapAttendanceAuthError,
   subscribeAttendanceAuth,
 } from "../../services/attendanceAuthService";
+import { getFirebaseConfigurationHint, isFirebaseConfigured } from "../../config/firebase";
 
 export const AttendanceLoginPage = () => {
   const navigate = useNavigate();
   const [submitError, setSubmitError] = useState("");
   const [busy, setBusy] = useState(false);
+  const configHint = getFirebaseConfigurationHint();
+  const firebaseReady = isFirebaseConfigured();
   const {
     register,
     handleSubmit,
@@ -51,6 +54,14 @@ export const AttendanceLoginPage = () => {
         <p className="text-brand-light-text-color text-sm mb-6">
           Sign in with the email and password from Firebase Authentication.
         </p>
+        {!firebaseReady && configHint && (
+          <div
+            className="mb-4 p-3 rounded-lg bg-amber-50 text-amber-900 text-sm border border-amber-200"
+            role="alert"
+          >
+            {configHint}
+          </div>
+        )}
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <InputField
             label="Email"

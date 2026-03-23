@@ -1,5 +1,5 @@
 import { signInWithEmailAndPassword, signOut, onAuthStateChanged } from "firebase/auth";
-import { getFirebaseAuth } from "../config/firebase";
+import { getFirebaseAuth, getFirebaseConfigurationHint } from "../config/firebase";
 
 /** Map Firebase Auth error codes to short messages for the login form */
 export function mapAttendanceAuthError(code) {
@@ -22,7 +22,10 @@ export function mapAttendanceAuthError(code) {
 export async function attendanceSignIn(email, password) {
   const auth = getFirebaseAuth();
   if (!auth) {
-    const err = new Error("Firebase is not configured. Add VITE_FIREBASE_* to .env.");
+    const msg =
+      getFirebaseConfigurationHint() ||
+      "Firebase is not configured. Add VITE_FIREBASE_* to .env and restart npm run dev.";
+    const err = new Error(msg);
     err.code = "app/no-firebase";
     throw err;
   }
