@@ -53,25 +53,35 @@ export function isFirebaseConfigured() {
   );
 }
 
+const PROD_FIREBASE_HINT =
+  "This production build has no Firebase config. In your host (Vercel, Netlify, Cloudflare Pages, etc.), add Environment Variables matching .env.example (VITE_FIREBASE_API_KEY, VITE_FIREBASE_PROJECT_ID, VITE_FIREBASE_AUTH_DOMAIN, VITE_FIREBASE_STORAGE_BUCKET, VITE_FIREBASE_MESSAGING_SENDER_ID, VITE_FIREBASE_APP_ID), then trigger a new build and deploy.";
+
 /**
  * User-facing hint when Firebase env is missing or still has template values.
  */
 export function getFirebaseConfigurationHint() {
   if (isFirebaseConfigured()) return null;
+  const isProd = import.meta.env.PROD;
   const hasAny =
     firebaseConfig.apiKey ||
     firebaseConfig.projectId ||
     trimEnv("VITE_FIREBASE_APP_ID");
   if (!hasAny) {
-    return "Firebase is not configured. Copy .env.example to .env in the project root, paste your Web app config from Firebase Console → Project settings → Your apps, then restart the dev server (npm run dev).";
+    return isProd
+      ? PROD_FIREBASE_HINT
+      : "Firebase is not configured. Copy .env.example to .env in the project root, paste your Web app config from Firebase Console → Project settings → Your apps, then restart the dev server (npm run dev).";
   }
   if (
     looksLikeFirebasePlaceholder(firebaseConfig.apiKey) ||
     looksLikeFirebasePlaceholder(firebaseConfig.projectId)
   ) {
-    return "Firebase still has placeholder values in .env (e.g. your-web-api-key). Replace them with real values from Firebase Console → Project settings, then restart npm run dev.";
+    return isProd
+      ? PROD_FIREBASE_HINT
+      : "Firebase still has placeholder values in .env (e.g. your-web-api-key). Replace them with real values from Firebase Console → Project settings, then restart npm run dev.";
   }
-  return "Firebase is not configured. Set VITE_FIREBASE_API_KEY and VITE_FIREBASE_PROJECT_ID in .env, then restart the dev server.";
+  return isProd
+    ? PROD_FIREBASE_HINT
+    : "Firebase is not configured. Set VITE_FIREBASE_API_KEY and VITE_FIREBASE_PROJECT_ID in .env, then restart the dev server.";
 }
 
 let app;

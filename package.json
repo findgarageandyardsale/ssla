@@ -11,6 +11,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "seed:attendance-rooms": "node scripts/seed-attendance-rooms.mjs",
+    "seed:attendance-teachers": "node scripts/seed-attendance-teachers.mjs",
     "import:students-xlsx": "node scripts/import-students-xlsx.mjs"
   },
   "dependencies": {
